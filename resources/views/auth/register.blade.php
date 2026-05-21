@@ -260,7 +260,7 @@
 
                 <div class="register-left">
 
-                    <img src="{{ asset('build/assets/img/favicon.ico') }}"
+                    <img src="{{ asset('img/favicon.ico') }}"
                          class="register-logo"
                          alt="Logo">
 

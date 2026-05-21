@@ -300,7 +300,7 @@
 
                 <a href="{{ url('/') }}">
 
-                    <img src="{{ asset('build/assets/img/favicon.ico') }}"
+                    <img src="{{ asset('img/favicon.ico') }}"
                          alt="Logo"
                          class="logo">
 

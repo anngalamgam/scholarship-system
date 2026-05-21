@@ -183,6 +183,26 @@ Route::prefix('/')->middleware(['auth','isAdmin'])->group(function () {
     [ApprovedApplicantController::class, 'export']
 )->name('admin.approved.export');
 
+Route::get(
+    '/admin/settings',
+    [App\Http\Controllers\Admin\AdminSettingsController::class, 'index']
+)->name('admin.settings');
+
+Route::post(
+    '/admin/settings/update',
+    [App\Http\Controllers\Admin\AdminSettingsController::class, 'update']
+)->name('admin.settings.update');
+
+/*
+|--------------------------------------------------------------------------
+| UPDATE PASSWORD
+|--------------------------------------------------------------------------
+*/
+Route::post(
+    '/admin/settings/update-password',
+    [App\Http\Controllers\Admin\AdminSettingsController::class, 'updatePassword']
+)->name('admin.settings.update.password');
+
 });
 
 

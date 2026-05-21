@@ -710,7 +710,7 @@
             <div class="logo-wrapper">
 
                 <img class="masthead-avatar"
-                     src="{{ asset('build/assets/img/favicon.ico') }}"
+                     src="{{ asset('img/favicon.ico') }}"
                      alt="LGU Aparri Logo">
 
             </div>
