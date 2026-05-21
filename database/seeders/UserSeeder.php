@@ -24,12 +24,15 @@ class UserSeeder extends Seeder
 );
 
         // STUDENT
-        User::create([
-            'name' => 'Student',
-            'email' => 'student@gmail.com',
-            'password' => Hash::make('student123'),
-            'role_as' => '0',
-        ]);
-
+        User::updateOrCreate(
+            [
+                'email' => 'student@gmail.com'
+            ],
+            [
+                'name' => 'Student',
+                'password' => Hash::make('password'),
+                'role_as' => 0,
+            ]
+        );
     }
 }
