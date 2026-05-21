@@ -371,12 +371,133 @@
                 width:100%;
             }
         }
+        /* PDF ALERT */
+
+.pdf-alert{
+    position:fixed;
+    top:100px;
+    right:-500px;
+    width:380px;
+    max-width:90%;
+    background:linear-gradient(135deg,#ef4444,#b91c1c);
+    color:white;
+    padding:18px 20px;
+    border-radius:20px;
+    display:flex;
+    align-items:flex-start;
+    gap:15px;
+    z-index:2000;
+    pointer-events:auto;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    transition:.5s ease;
+}
+
+.pdf-alert.show{
+    right:20px;
+}
+
+.pdf-alert-icon{
+    width:55px;
+    height:55px;
+
+    min-width:55px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.18);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:22px;
+}
+
+.pdf-close{
+    margin-left:auto;
+
+    border:none;
+    background:none;
+
+    color:white;
+
+    font-size:20px;
+
+    cursor:pointer;
+}
+
+.pdf-alert h5{
+    font-weight:700;
+}
+
+.pdf-alert p{
+    font-size:14px;
+    opacity:.95;
+}
+
+@media(max-width:768px){
+
+    .pdf-alert{
+        top:80px;
+        left:10px;
+        right:10px;
+        width:auto;
+        max-width:none;
+
+        transform:translateY(-20px);
+        opacity:0;
+    }
+
+    .pdf-alert.show{
+        transform:translateY(0);
+        opacity:1;
+    }
+
+}
+
+
+.sidebar{
+    z-index:1050;
+}
+
+.mobile-topbar{
+    z-index:1060;
+}
 
     </style>
 
 </head>
 
 <body>
+    <!-- PDF ALERT -->
+<div class="pdf-alert" id="pdfAlert">
+
+    <div class="pdf-alert-icon">
+
+        <i class="fa-solid fa-file-circle-xmark"></i>
+
+    </div>
+
+    <div>
+
+        <h5 class="mb-1">
+            Fill-up Form First
+        </h5>
+
+        <p class="mb-0">
+            You need to complete and submit your scholar form before downloading the PDF.
+        </p>
+
+    </div>
+
+    <button class="pdf-close"
+            onclick="closePdfAlert()">
+
+        <i class="fa-solid fa-xmark"></i>
+
+    </button>
+
+</div>
 
     <!-- MOBILE TOPBAR -->
     <div class="mobile-topbar">
@@ -419,12 +540,28 @@
             Fill-up Form
 
         </a>
-         <a href="{{ route('student.pdf') }}">
+        {{-- DOWNLOAD PDF SIDEBAR BUTTON --}}
 
-            <i class="fa-solid fa-file-pdf"></i>
-            Download PDF
+@if($record)
 
-        </a>
+    <a href="{{ route('student.pdf') }}">
+
+        <i class="fa-solid fa-file-pdf"></i>
+        Download PDF
+
+    </a>
+
+@else
+
+    <a href="javascript:void(0)"
+       onclick="showPdfAlert()">
+
+        <i class="fa-solid fa-file-pdf"></i>
+        Download PDF
+
+    </a>
+
+@endif
 
        
 
@@ -446,6 +583,20 @@
         </form>
 
     </div>
+
+    <script>document.addEventListener('click', function(e){
+
+    if(
+        window.innerWidth <= 991 &&
+        !sidebar.contains(e.target) &&
+        !menuBtn.contains(e.target)
+    ){
+
+        sidebar.classList.remove('show');
+
+    }
+
+});</script>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
@@ -1074,19 +1225,40 @@
 
                        
 
-                       <div class="col-md-4">
+                       {{-- DOWNLOAD PDF BODY BUTTON --}}
 
-    <a href="{{ route('student.pdf') }}" class="text-decoration-none">
+<div class="col-md-4">
 
-        <button class="btn btn-danger w-100 quick-btn">
+    @if($record)
+
+        <a href="{{ route('student.pdf') }}"
+           class="text-decoration-none">
+
+            <button class="btn btn-danger w-100 quick-btn">
+
+                <i class="fa-solid fa-file-pdf mb-2"></i>
+                <br>
+
+                Download PDF
+
+            </button>
+
+        </a>
+
+    @else
+
+        <button type="button"
+                class="btn btn-danger w-100 quick-btn"
+                onclick="showPdfAlert()">
 
             <i class="fa-solid fa-file-pdf mb-2"></i>
             <br>
+
             Download PDF
 
         </button>
 
-    </a>
+    @endif
 
 </div>
 
@@ -1630,6 +1802,46 @@
 
     updateSteps();
 
+
+
+function showPdfAlert(){
+
+    const alertBox = document.getElementById('pdfAlert');
+
+    alertBox.classList.add('show');
+
+    setTimeout(() => {
+
+        alertBox.classList.remove('show');
+
+    }, 4000);
+
+}
+
+function closePdfAlert(){
+
+    const alertBox = document.getElementById('pdfAlert');
+
+    alertBox.classList.remove('show');
+
+}
+
+setTimeout(() => {
+
+    document.querySelectorAll('.floating-alert')
+        .forEach(alert => {
+
+            alert.style.opacity = '0';
+
+            setTimeout(() => {
+
+                alert.remove();
+
+            }, 500);
+
+        });
+
+}, 4000);
 </script>
 
 </body>
