@@ -141,7 +141,7 @@ Route::prefix('/')->middleware(['auth','isAdmin'])->group(function () {
 
     Route::get('/dashboard', [App\Http\Controllers\admin\adminCtrl::class, 'index']);
 
-    Route::resource('/user', 'App\Http\Controllers\Admin\adminuser');
+    Route::resource('/user', 'App\Http\Controllers\admin\adminuser');
     Route::resource('program', 'App\Http\Controllers\Admin\program\programCtrl');
     Route::resource('accomplishment', 'App\Http\Controllers\Admin\program\accomplishmentCtrl');
     Route::resource('narrative', 'App\Http\Controllers\Admin\project\narrative');
@@ -198,12 +198,12 @@ Route::prefix('/')->middleware(['auth','isAdmin'])->group(function () {
 
 Route::get(
     '/admin/settings',
-    [App\Http\Controllers\Admin\AdminSettingsController::class, 'index']
+    [App\Http\Controllers\admin\AdminSettingsController::class, 'index']
 )->name('admin.settings');
 
 Route::post(
     '/admin/settings/update',
-    [App\Http\Controllers\Admin\AdminSettingsController::class, 'update']
+    [App\Http\Controllers\admin\AdminSettingsController::class, 'update']
 )->name('admin.settings.update');
 
 /*
@@ -213,7 +213,7 @@ Route::post(
 */
 Route::post(
     '/admin/settings/update-password',
-    [App\Http\Controllers\Admin\AdminSettingsController::class, 'updatePassword']
+    [App\Http\Controllers\admin\AdminSettingsController::class, 'updatePassword']
 )->name('admin.settings.update.password');
 
 });

@@ -20,8 +20,7 @@ class ApprovedApplicantsExport implements
     {
         return ApprovedApplicant::select(
 
-            'id',
-            'user_id',
+            
 
             'first_name',
             'middle_name',
@@ -73,8 +72,7 @@ class ApprovedApplicantsExport implements
     {
         return [
 
-            'ID',
-            'USER ID',
+            
 
             'FIRST NAME',
             'MIDDLE NAME',
