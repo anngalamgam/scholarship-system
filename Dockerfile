@@ -6,12 +6,19 @@ RUN apt-get update && apt-get install -y \
     curl \
     libzip-dev \
     libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
     libpq-dev \
     zip
 
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg
+
 RUN docker-php-ext-install \
+    gd \
     pdo \
     pdo_mysql \
     pdo_pgsql \
