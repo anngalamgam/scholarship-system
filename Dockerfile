@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install \
     pdo \
     pdo_mysql \
+    pdo_pgsql \
     zip \
     mbstring \
     exif \
@@ -27,6 +28,10 @@ WORKDIR /app
 COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
+
+RUN php artisan migrate --force
+
+RUN php artisan db:seed --force
 
 EXPOSE 10000
 
