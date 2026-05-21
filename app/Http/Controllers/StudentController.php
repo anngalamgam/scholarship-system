@@ -104,24 +104,23 @@ public function downloadPdf()
 {
     $record = StudentRecord::where('user_id', auth()->id())->first();
 
-    // LOGO PATHS (use public_path, NOT base_path)
-    $pesoPath = public_path('build/assets/img/peso.png');
-    $aparriPath = public_path('build/assets/img/aparri.png');
+    // LOGO PATHS
+    $pesoPath = public_path('img/peso.png');
+    $aparriPath = public_path('img/aparri.png');
 
-    // SAFETY CHECK (prevents silent failure)
+    // CHECK IF FILE EXISTS
     if (!file_exists($pesoPath)) {
         dd("Peso logo not found: " . $pesoPath);
     }
 
     if (!file_exists($aparriPath)) {
-        dd("Favicon not found: " . $aparriPath);
+        dd("Aparri logo not found: " . $aparriPath);
     }
 
-    // Convert to base64
+    // CONVERT TO BASE64
     $pesoLogo = 'data:image/png;base64,' . base64_encode(file_get_contents($pesoPath));
 
-    // ICO must be image/x-icon (NOT image/ico)
-    $aparri = 'data:image/x-png;base64,' . base64_encode(file_get_contents($aparriPath));
+    $aparri = 'data:image/png;base64,' . base64_encode(file_get_contents($aparriPath));
 
     $pdf = Pdf::loadView('student.print-pds', [
         'record' => $record,
@@ -132,7 +131,7 @@ public function downloadPdf()
     ->setOptions([
         'isHtml5ParserEnabled' => true,
         'isRemoteEnabled' => false,
-        'enable_local_file_access' => true, // IMPORTANT for dompdf images
+        'enable_local_file_access' => true,
     ]);
 
     return $pdf->download('Scholar-Application-Form.pdf');
