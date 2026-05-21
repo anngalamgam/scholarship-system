@@ -12,12 +12,16 @@ class UserSeeder extends Seeder
     {
 
         // ADMIN
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('admin123'),
-            'role_as' => '1',
-        ]);
+        User::updateOrCreate(
+    [
+        'email' => 'admin@gmail.com'
+    ],
+    [
+        'name' => 'Admin',
+        'password' => bcrypt('password'),
+        'role_as' => 1,
+    ]
+);
 
         // STUDENT
         User::create([
