@@ -15,10 +15,7 @@ return new class extends Migration
 
             $table->id();
 
-            // ORIGINAL STUDENT RECORD ID
-            $table->foreignId('student_record_id')
-                  ->constrained('student_records')
-                  ->onDelete('cascade');
+            
 
             $table->foreignId('user_id')
                   ->constrained()

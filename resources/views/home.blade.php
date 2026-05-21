@@ -407,6 +407,10 @@
             Dashboard
         </a>
 
+        <a href="{{ route('student.settings') }}">
+        <i class="fa fa-gear"></i> Settings
+    </a>
+
         <a href="#"
            data-bs-toggle="modal"
            data-bs-target="#pdsModal">

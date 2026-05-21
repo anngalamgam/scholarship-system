@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\program;
 use App\Models\project;
 use App\Models\accomplishment;
+ use App\Http\Controllers\Student\StudentSettingsController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ApprovedApplicantController;
 use App\Models\accomplishment_img;
@@ -118,6 +119,18 @@ Route::get('/student/pds/print',
 Route::get('/student/pds/pdf',
     [StudentController::class, 'downloadPdf'])
     ->name('student.pdf');
+
+   
+
+Route::get('/student/settings', [StudentSettingsController::class, 'index'])
+    ->name('student.settings');
+
+    Route::get('/student/settings', function () {
+    return view('student.settings');
+})->name('student.settings');
+
+Route::post('/student/settings/update', [StudentSettingsController::class, 'update'])
+    ->name('student.settings.update');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
