@@ -122,6 +122,6 @@
     <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
    
-   
+   @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </body>
 </html>
