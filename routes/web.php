@@ -126,7 +126,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::prefix('/')->middleware(['auth','isAdmin'])->group(function () {
 
-    Route::get('/dashboard', [App\Http\Controllers\Admin\adminCtrl::class, 'index']);
+    Route::get('/dashboard', [App\Http\Controllers\admin\adminCtrl::class, 'index']);
 
     Route::resource('/user', 'App\Http\Controllers\Admin\adminuser');
     Route::resource('program', 'App\Http\Controllers\Admin\program\programCtrl');
