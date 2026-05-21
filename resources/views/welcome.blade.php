@@ -576,7 +576,7 @@
             <a class="navbar-brand"
                href="#page-top">
 
-                <img src="{{ asset('build/assets/img/favicon.ico') }}"
+                <img src="{{ asset('img/favicon.ico') }}"
                      alt="LGU Logo">
 
             </a>
@@ -656,14 +656,14 @@
 
             <div class="carousel-item active">
 
-                    <img src="{{ asset('build/assets/img/library.jpg') }}"
+                    <img src="{{ asset('img/library.jpg') }}"
                          alt="Education">
 
                 </div>
               
                 <div class="carousel-item ">
 
-                    <img src="{{ asset('build/assets/img/books.png') }}"
+                    <img src="{{ asset('img/books.png') }}"
                          alt="Scholarship">
 
                 </div>
@@ -671,7 +671,7 @@
                 <!-- IMAGE 2 -->
                 <div class="carousel-item">
 
-                    <img src="{{ asset('build/assets/img/students.jpg') }}"
+                    <img src="{{ asset('img/students.jpg') }}"
                          alt="Students">
 
                 </div>
@@ -679,19 +679,19 @@
                 <!-- IMAGE 3 -->
                 <div class="carousel-item">
 
-                    <img src="{{ asset('build/assets/img/images.jpg') }}"
+                    <img src="{{ asset('img/images.jpg') }}"
                          alt="Students">
 
                 </div>
                 <div class="carousel-item">
 
-                    <img src="{{ asset('build/assets/img/images1.jpg') }}"
+                    <img src="{{ asset('img/images1.jpg') }}"
                          alt="Students">
 
                 </div>
                 <div class="carousel-item">
 
-                    <img src="{{ asset('build/assets/img/images2.jpg') }}"
+                    <img src="{{ asset('img/images2.jpg') }}"
                          alt="Students">
 
                 </div>
