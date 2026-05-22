@@ -187,8 +187,13 @@ Route::prefix('/')->middleware(['auth','isAdmin'])->group(function () {
     */
 
     Route::delete(
+    '/admin/applicants/{id}',
+    [ApprovedApplicantController::class, 'destroy']
+)->name('admin.approveds.delete');
+
+Route::delete(
         '/admin/approved-applicants/{id}',
-        [ApprovedApplicantController::class, 'destroy']
+        [ApprovedApplicantController::class, 'destroys']
     )->name('admin.approved.delete');
 
     Route::get(

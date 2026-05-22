@@ -157,6 +157,19 @@ public function export()
 
     public function destroy($id)
     {
+        $approved = Application::findOrFail($id);
+
+        $approved->delete();
+
+        return back()->with(
+            'success',
+            'Applicant deleted successfully!'
+        );
+    }
+
+
+    public function destroys($id)
+    {
         $approved = ApprovedApplicant::findOrFail($id);
 
         $approved->delete();

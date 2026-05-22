@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 <div class="container-fluid py-4">
 
     <!-- HEADER -->
@@ -11,7 +10,7 @@
 
         <div class="card-body p-4">
 
-            <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
                 <div>
 
@@ -28,10 +27,9 @@
                 <div>
 
                     <a href="{{ route('admin.approved.applicants') }}"
-                       class="btn btn-success px-4 rounded-3">
+                       class="btn btn-success rounded-3 px-4">
 
                         <i class="fa-solid fa-circle-check me-2"></i>
-
                         Approved Applicants
 
                     </a>
@@ -44,81 +42,81 @@
 
     </div>
 
-    <!-- SUCCESS -->
+    <!-- SUCCESS ALERT -->
 
-   @if(session('success'))
+    @if(session('success'))
 
-<div class="floating-alert">
+    <div class="floating-alert">
 
-    <div class="success-alert success-bg">
+        <div class="success-alert success-bg">
 
-        <div class="success-icon">
-            <i class="fa-solid fa-circle-check"></i>
-        </div>
-
-        <div class="success-content">
-
-            <div class="success-title">
-                Success
+            <div class="success-icon">
+                <i class="fa-solid fa-circle-check"></i>
             </div>
 
-            <div class="success-message">
-                {{ session('success') }}
+            <div class="success-content">
+
+                <div class="success-title">
+                    Success
+                </div>
+
+                <div class="success-message">
+                    {{ session('success') }}
+                </div>
+
             </div>
 
+            <button type="button"
+                    class="close-alert"
+                    onclick="closeAlert()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
         </div>
-
-        <button type="button"
-                class="close-alert"
-                onclick="closeAlert()">
-
-            <i class="fa-solid fa-xmark"></i>
-
-        </button>
 
     </div>
 
-</div>
+    @endif
 
-@endif
+    <!-- ERROR ALERT -->
 
+    @if(session('error'))
 
-@if(session('error'))
+    <div class="floating-alert">
 
-<div class="floating-alert">
+        <div class="success-alert error-bg">
 
-    <div class="success-alert error-bg">
-
-        <div class="success-icon">
-            <i class="fa-solid fa-circle-exclamation"></i>
-        </div>
-
-        <div class="success-content">
-
-            <div class="success-title">
-                Duplicate
+            <div class="success-icon">
+                <i class="fa-solid fa-circle-exclamation"></i>
             </div>
 
-            <div class="success-message">
-                {{ session('error') }}
+            <div class="success-content">
+
+                <div class="success-title">
+                    Error
+                </div>
+
+                <div class="success-message">
+                    {{ session('error') }}
+                </div>
+
             </div>
 
+            <button type="button"
+                    class="close-alert"
+                    onclick="closeAlert()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
         </div>
-
-        <button type="button"
-                class="close-alert"
-                onclick="closeAlert()">
-
-            <i class="fa-solid fa-xmark"></i>
-
-        </button>
 
     </div>
 
-</div>
-
-@endif
-
+    @endif
 
     <!-- TABLE CARD -->
 
@@ -128,44 +126,109 @@
 
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
-    <h4 class="fw-bold mb-0">
-        Applicant List
-    </h4>
+                <h4 class="fw-bold mb-0">
+                    Applicant List
+                </h4>
 
-    <div class="d-flex align-items-center gap-3 flex-wrap">
+                <div class="d-flex align-items-center gap-3 flex-wrap">
 
-        <!-- SEARCH BAR -->
+                    <!-- SEARCH -->
 
-        <div class="position-relative">
+                    <div class="position-relative">
 
-            <i class="fa-solid fa-magnifying-glass position-absolute"
-               style="
-                    left:15px;
-                    top:50%;
-                    transform:translateY(-50%);
-                    color:#6c757d;
-               "></i>
+                        <i class="fa-solid fa-magnifying-glass position-absolute"
+                           style="
+                                left:15px;
+                                top:50%;
+                                transform:translateY(-50%);
+                                color:#6c757d;
+                           "></i>
 
-            <input type="text"
-                   id="searchInput"
-                   class="form-control rounded-4 ps-5"
-                   placeholder="Search applicants..."
-                   style="
-                        width:260px;
-                        height:45px;
-                        border:1px solid #dcdcdc;
-                   ">
+                        <input type="text"
+                               id="searchInput"
+                               class="form-control rounded-4 ps-5 search-input"
+                               placeholder="Search applicants...">
+
+                    </div>
+
+                    <!-- TOTAL -->
+
+                    <span class="badge bg-primary px-4 py-2 fs-6">
+
+                        {{ $applicants->count() }} Applicants
+
+                    </span>
+
+                </div>
+
+            </div>
 
         </div>
 
-        <!-- TOTAL -->
+        <!-- DELETE MODAL -->
 
-        <span class="badge bg-primary px-4 py-2 fs-6">
+        <div class="modal fade"
+             id="deleteModal"
+             tabindex="-1">
 
-            {{ $applicants->count() }} Applicants
+            <div class="modal-dialog modal-dialog-centered">
 
-        </span>
+                <div class="modal-content border-0 rounded-4 shadow-lg">
 
+                    <div class="modal-body text-center p-5">
+
+                        <div class="mb-4">
+
+                            <div class="delete-icon mx-auto">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </div>
+
+                        </div>
+
+                        <h3 class="fw-bold mb-3 text-danger">
+                            Delete Applicant?
+                        </h3>
+
+                        <p class="text-muted mb-4">
+
+                            Are you sure you want to delete this applicant?
+                            This action cannot be undone.
+
+                        </p>
+
+                        <form id="deleteForm"
+                              method="POST">
+
+                            @csrf
+                            @method('DELETE')
+
+                            <div class="d-flex justify-content-center gap-3 flex-wrap">
+
+                                <button type="button"
+                                        class="btn btn-light px-4 rounded-3"
+                                        data-bs-dismiss="modal">
+
+                                    Cancel
+
+                                </button>
+
+                                <button type="submit"
+                                        class="btn btn-danger px-4 rounded-3">
+
+                                    <i class="fa-solid fa-trash me-1"></i>
+                                    Yes Delete
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -182,22 +245,13 @@
                         <tr>
 
                             <th>ID</th>
-
                             <th>FULL NAME</th>
-
                             <th>COURSE</th>
-
                             <th>SCHOOL</th>
-
                             <th>CONTACT</th>
-
                             <th>EMAIL</th>
-
                             <th>STATUS</th>
-
-                            <th width="220">
-                                ACTION
-                            </th>
+                            <th width="250">ACTION</th>
 
                         </tr>
 
@@ -251,11 +305,7 @@
 
                             <td>
 
-                                <div class="d-flex gap-2 flex-wrap">
-
-                                    <!-- VIEW -->
-
-                                    
+                                <div class="action-buttons">
 
                                     <!-- APPROVE -->
 
@@ -264,10 +314,9 @@
 
                                         @csrf
 
-                                        <button class="btn btn-success btn-sm rounded-3 px-3">
+                                        <button class="btn btn-success btn-sm action-btn">
 
-                                            <i class="fa-solid fa-check"></i>
-
+                                            <i class="fa-solid fa-check me-1"></i>
                                             Approve
 
                                         </button>
@@ -276,7 +325,14 @@
 
                                     <!-- DELETE -->
 
-                                  
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm action-btn"
+                                            onclick="openDeleteModal({{ $student->id }})">
+
+                                        <i class="fa-solid fa-trash me-1"></i>
+                                        Delete
+
+                                    </button>
 
                                 </div>
 
@@ -331,6 +387,43 @@
 .card{
     overflow:hidden;
 }
+
+.btn{
+    font-weight:600;
+}
+
+.badge{
+    border-radius:30px;
+}
+
+/* SEARCH */
+
+.search-input{
+    width:260px;
+    height:45px;
+    border:1px solid #dcdcdc;
+}
+
+/* ACTION BUTTONS */
+
+.action-buttons{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.action-buttons form{
+    margin:0;
+}
+
+.action-btn{
+    min-width:100px;
+    white-space:nowrap;
+}
+
+/* SUCCESS ALERT */
+
 .success-bg{
     background:linear-gradient(135deg,#16a34a,#22c55e);
     box-shadow:
@@ -338,7 +431,7 @@
         0 0 35px rgba(34,197,94,.3);
 }
 
-/* ERROR COLOR */
+/* ERROR ALERT */
 
 .error-bg{
     background:linear-gradient(135deg,#dc2626,#ef4444);
@@ -347,35 +440,7 @@
         0 0 35px rgba(239,68,68,.3);
 }
 
-.btn{
-    font-weight:600;
-}
-
-.badge{
-    border-radius:30px;
-}
-.table tbody tr{
-    transition:.2s;
-}
-
-.table tbody tr:hover{
-    transform:scale(1.01);
-    box-shadow:0 4px 15px rgba(0,0,0,0.08);
-}
-
-.card{
-    overflow:hidden;
-}
-
-.btn{
-    font-weight:600;
-}
-
-.badge{
-    border-radius:30px;
-}
-
-/* FLOATING SUCCESS ALERT */
+/* FLOATING ALERT */
 
 .floating-alert{
     position:fixed;
@@ -387,16 +452,12 @@
 
 .success-alert{
     width:380px;
-    background:linear-gradient(135deg,#16a34a,#22c55e);
     color:#fff;
     border-radius:18px;
     padding:18px 20px;
     display:flex;
     align-items:center;
     gap:15px;
-    box-shadow:
-        0 0 15px rgba(34,197,94,.5),
-        0 0 35px rgba(34,197,94,.3);
     animation:glow 2s infinite alternate;
 }
 
@@ -407,7 +468,6 @@
 .success-title{
     font-size:18px;
     font-weight:700;
-    margin-bottom:2px;
 }
 
 .success-message{
@@ -422,6 +482,21 @@
     color:#fff;
     font-size:18px;
     cursor:pointer;
+}
+
+/* DELETE MODAL */
+
+.delete-icon{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:rgba(239,68,68,.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:38px;
+    color:#ef4444;
+    animation:pulseDelete 1.5s infinite;
 }
 
 /* ANIMATIONS */
@@ -455,16 +530,73 @@
     }
 
 }
-</style>
 
-<script>
-    function closeAlert(){
+@keyframes pulseDelete{
 
-    document.querySelector('.floating-alert').style.display = 'none';
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        transform:scale(1);
+    }
 
 }
 
-/* AUTO CLOSE AFTER 4 SECONDS */
+/* MOBILE RESPONSIVE */
+
+@media(max-width:768px){
+
+    .search-input{
+        width:100%;
+    }
+
+    .floating-alert{
+        right:10px;
+        left:10px;
+        top:15px;
+    }
+
+    .success-alert{
+        width:100%;
+    }
+
+    .action-buttons{
+        flex-direction:row;
+        gap:6px;
+    }
+
+    .action-btn{
+        width:auto;
+        font-size:12px;
+        padding:6px 10px;
+    }
+
+    table{
+        min-width:900px;
+    }
+
+}
+
+</style>
+
+<script>
+
+function closeAlert(){
+
+    let alert = document.querySelector('.floating-alert');
+
+    if(alert){
+        alert.style.display = 'none';
+    }
+
+}
+
+/* AUTO CLOSE ALERT */
 
 setTimeout(() => {
 
@@ -485,6 +617,7 @@ setTimeout(() => {
 
 },4000);
 
+/* SEARCH */
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -513,6 +646,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+/* DELETE MODAL */
+
+function openDeleteModal(id){
+
+    const form = document.getElementById('deleteForm');
+
+    form.action = "{{ url('/admin/applicants') }}/" + id;
+
+    const modal = new bootstrap.Modal(
+        document.getElementById('deleteModal')
+    );
+
+    modal.show();
+
+}
 
 </script>
 

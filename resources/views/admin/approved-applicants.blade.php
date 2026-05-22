@@ -131,19 +131,15 @@
 
                             <td>
 
-                                <form action="{{ route('admin.approved.delete', $student->id) }}"
-                                      method="POST">
+                                <button type="button"
+        class="btn btn-danger btn-sm w-100"
+        onclick="openDeleteModal({{ $student->id }})">
 
-                                    @csrf
-                                    @method('DELETE')
+    <i class="fa-solid fa-trash me-1"></i>
 
-                                    <button class="btn btn-danger btn-sm w-100">
+    Delete
 
-                                        Delete
-
-                                    </button>
-
-                                </form>
+</button>
 
                             </td>
 
@@ -176,4 +172,129 @@
 
 </div>
 
+<!-- DELETE MODAL -->
+
+<div class="modal fade"
+     id="deleteModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+
+            <div class="modal-body text-center p-5">
+
+                <div class="mb-4">
+
+                    <div class="delete-icon mx-auto">
+
+                        <i class="fa-solid fa-trash"></i>
+
+                    </div>
+
+                </div>
+
+                <h3 class="fw-bold mb-3 text-danger">
+
+                    Delete Approved Applicant?
+
+                </h3>
+
+                <p class="text-muted mb-4">
+
+                    Are you sure you want to remove this approved applicant?
+                    This action cannot be undone.
+
+                </p>
+
+                <form id="deleteForm"
+                      method="POST">
+
+                    @csrf
+                    @method('DELETE')
+
+                    <div class="d-flex justify-content-center gap-3">
+
+                        <button type="button"
+                                class="btn btn-light px-4 rounded-3"
+                                data-bs-dismiss="modal">
+
+                            Cancel
+
+                        </button>
+
+                        <button type="submit"
+                                class="btn btn-danger px-4 rounded-3">
+
+                            <i class="fa-solid fa-trash me-1"></i>
+
+                            Yes Delete
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<style>
+
+.delete-icon{
+    width:90px;
+    height:90px;
+
+    border-radius:50%;
+
+    background:rgba(239,68,68,.12);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:38px;
+    color:#ef4444;
+
+    animation:pulseDelete 1.5s infinite;
+}
+
+@keyframes pulseDelete{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
+}
+
+</style>
+<script>
+
+function openDeleteModal(id){
+
+    const form = document.getElementById('deleteForm');
+
+    form.action = "{{ url('/admin/approved-applicants') }}/" + id;
+
+    const modal = new bootstrap.Modal(
+        document.getElementById('deleteModal')
+    );
+
+    modal.show();
+
+}
+
+</script>
 @endsection
