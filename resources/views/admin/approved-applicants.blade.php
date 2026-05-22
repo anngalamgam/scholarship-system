@@ -6,9 +6,11 @@
 
     <div class="card border-0 shadow-lg rounded-4">
 
+        <!-- HEADER -->
+
         <div class="card-header bg-success text-white p-4">
 
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
                 <h2 class="fw-bold mb-0">
 
@@ -28,34 +30,61 @@
 
         <div class="card-body">
 
-    @if(session('success'))
+            <!-- SUCCESS ALERT -->
 
-        <div class="alert alert-success alert-dismissible fade show">
+            @if(session('success'))
 
-            {{ session('success') }}
+            <div class="alert alert-success alert-dismissible fade show">
 
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"></button>
+                {{ session('success') }}
 
-        </div>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"></button>
 
-    @endif
+            </div>
 
-    <div class="d-flex justify-content-end mb-3">
+            @endif
 
-        <a href="{{ route('admin.approved.export') }}"
-           class="btn btn-success rounded-3 shadow-sm">
+            <!-- TOP ACTIONS -->
 
-            <i class="fa-solid fa-file-excel me-2"></i>
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
 
-            Download Excel
+                <!-- SEARCH BAR -->
 
-        </a>
+                <div class="position-relative">
 
-    </div>
+                    <i class="fa-solid fa-magnifying-glass position-absolute"
+                       style="
+                            left:15px;
+                            top:50%;
+                            transform:translateY(-50%);
+                            color:#6c757d;
+                       "></i>
 
-    <div class="table-responsive">
+                    <input type="text"
+                           id="searchInput"
+                           class="form-control rounded-4 ps-5 search-input"
+                           placeholder="Search approved applicants...">
+
+                </div>
+
+                <!-- EXPORT BUTTON -->
+
+                <a href="{{ route('admin.approved.export') }}"
+                   class="btn btn-success rounded-3 shadow-sm px-4">
+
+                    <i class="fa-solid fa-file-excel me-2"></i>
+
+                    Download Excel
+
+                </a>
+
+            </div>
+
+            <!-- TABLE -->
+
+            <div class="table-responsive">
 
                 <table class="table table-hover align-middle">
 
@@ -64,24 +93,18 @@
                         <tr>
 
                             <th>ID</th>
-
                             <th>FULL NAME</th>
-
                             <th>COURSE</th>
-
                             <th>SCHOOL</th>
-
                             <th>CONTACT</th>
-
                             <th>STATUS</th>
-
-                            <th width="120">ACTION</th>
+                            <th width="140">ACTION</th>
 
                         </tr>
 
                     </thead>
 
-                    <tbody>
+                    <tbody id="approvedTable">
 
                         @forelse($approved as $student)
 
@@ -132,14 +155,14 @@
                             <td>
 
                                 <button type="button"
-        class="btn btn-danger btn-sm w-100"
-        onclick="openDeleteModal({{ $student->id }})">
+                                        class="btn btn-danger btn-sm w-100 rounded-3"
+                                        onclick="openDeleteModal({{ $student->id }})">
 
-    <i class="fa-solid fa-trash me-1"></i>
+                                    <i class="fa-solid fa-trash me-1"></i>
 
-    Delete
+                                    Delete
 
-</button>
+                                </button>
 
                             </td>
 
@@ -213,7 +236,7 @@
                     @csrf
                     @method('DELETE')
 
-                    <div class="d-flex justify-content-center gap-3">
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
 
                         <button type="button"
                                 class="btn btn-light px-4 rounded-3"
@@ -243,7 +266,18 @@
     </div>
 
 </div>
+
 <style>
+
+/* SEARCH */
+
+.search-input{
+    width:280px;
+    height:45px;
+    border:1px solid #dcdcdc;
+}
+
+/* DELETE ICON */
 
 .delete-icon{
     width:90px;
@@ -263,6 +297,31 @@
     animation:pulseDelete 1.5s infinite;
 }
 
+/* TABLE */
+
+.table tbody tr{
+    transition:.2s;
+}
+
+.table tbody tr:hover{
+    transform:scale(1.01);
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* CARD */
+
+.card{
+    overflow:hidden;
+}
+
+/* BADGE */
+
+.badge{
+    border-radius:30px;
+}
+
+/* ANIMATION */
+
 @keyframes pulseDelete{
 
     0%{
@@ -279,8 +338,25 @@
 
 }
 
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .search-input{
+        width:100%;
+    }
+
+    table{
+        min-width:750px;
+    }
+
+}
+
 </style>
+
 <script>
+
+/* DELETE MODAL */
 
 function openDeleteModal(id){
 
@@ -296,5 +372,36 @@ function openDeleteModal(id){
 
 }
 
+/* SEARCH */
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const searchInput = document.getElementById('searchInput');
+
+    searchInput.addEventListener('keyup', function () {
+
+        let value = this.value.toLowerCase();
+
+        let rows = document.querySelectorAll('#approvedTable tr');
+
+        rows.forEach(function(row){
+
+            if(row.innerText.toLowerCase().includes(value)){
+
+                row.style.display = '';
+
+            }else{
+
+                row.style.display = 'none';
+
+            }
+
+        });
+
+    });
+
+});
+
 </script>
+
 @endsection
