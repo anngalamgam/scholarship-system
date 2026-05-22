@@ -615,7 +615,7 @@ pointer-events:auto;
 
     </div>
 
-    {{-- SUCCESS FLOATING ALERT --}}
+   {{-- SUCCESS FLOATING ALERT --}}
 @if(session('success'))
 
 <div class="floating-alert success-alert"
@@ -685,6 +685,41 @@ pointer-events:auto;
 
 @endif
 
+{{-- VALIDATION ERROR FLOATING ALERT --}}
+@if($errors->any())
+
+<div class="floating-alert error-alert"
+     id="floatingAlert">
+
+    <div class="alert-icon">
+
+        <i class="fa-solid fa-circle-exclamation"></i>
+
+    </div>
+
+    <div class="alert-content">
+
+        <h5>
+            Validation Error
+        </h5>
+
+        <p>
+            {{ $errors->first() }}
+        </p>
+
+    </div>
+
+    <button class="close-alert"
+            onclick="closeAlert()">
+
+        <i class="fa fa-xmark"></i>
+
+    </button>
+
+</div>
+
+@endif
+
     <!-- SETTINGS ROW -->
     <div class="row g-4">
 
@@ -732,71 +767,83 @@ pointer-events:auto;
 
         </div>
 
-        <!-- PASSWORD -->
-        <div class="col-lg-6">
+       <!-- PASSWORD -->
+<div class="col-lg-6">
 
-            <div class="card-box h-100">
+    <div class="card-box h-100">
 
-                <h5>
+        <h5>
 
-                    <i class="fa fa-lock me-2 text-success"></i>
+            <i class="fa fa-lock me-2 text-success"></i>
 
-                    Update Password
+            Update Password
 
-                </h5>
+        </h5>
 
-                <form method="POST"
-                      action="{{ route('student.settings.update') }}">
+        <form method="POST"
+              action="{{ route('student.settings.update') }}"
+              id="passwordForm">
 
-                    @csrf
+            @csrf
 
-                    <div class="mb-3">
+            <div class="mb-3">
 
-                        <label class="mb-2 fw-semibold">
-                            Current Password
-                        </label>
+                <label class="mb-2 fw-semibold">
+                    Current Password
+                </label>
 
-                        <input type="password"
-                               name="current_password"
-                               class="form-control"
-                               placeholder="Enter current password">
+                <input type="password"
+                       name="current_password"
+                       class="form-control"
+                       placeholder="Enter current password">
 
-                    </div>
+            </div>
 
-                    <div class="mb-3">
+            <div class="mb-3">
 
-                        <label class="mb-2 fw-semibold">
-                            New Password
-                        </label>
+                <label class="mb-2 fw-semibold">
+                    New Password
+                </label>
 
-                        <input type="password"
-                               name="password"
-                               class="form-control"
-                               placeholder="Enter new password">
+                <input type="password"
+                       name="password"
+                       id="password"
+                       class="form-control"
+                       placeholder="Enter new password">
 
-                    </div>
+            </div>
 
-                    <div class="mb-4">
+            <div class="mb-2">
 
-                        <label class="mb-2 fw-semibold">
-                            Confirm Password
-                        </label>
+                <label class="mb-2 fw-semibold">
+                    Confirm Password
+                </label>
 
-                        <input type="password"
-                               name="password_confirmation"
-                               class="form-control"
-                               placeholder="Confirm password">
+                <input type="password"
+                       name="password_confirmation"
+                       id="confirmPassword"
+                       class="form-control"
+                       placeholder="Confirm password">
 
-                    </div>
+            </div>
 
-                    <button class="btn btn-success w-100">
+            <!-- ERROR MESSAGE -->
+            <div id="passwordError"
+                 class="text-danger fw-semibold mb-3"
+                 style="display:none;">
 
-                        Update Password
+                Password does not match.
 
-                    </button>
+            </div>
 
-                </form>
+            <button class="btn btn-success w-100"
+                    id="submitBtn">
 
+                Update Password
+
+            </button>
+
+        </form>
             </div>
 
         </div>
@@ -807,8 +854,56 @@ pointer-events:auto;
 
 <!-- BOOTSTRAP -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
+
+const password = document.getElementById('password');
+
+const confirmPassword = document.getElementById('confirmPassword');
+
+const passwordError = document.getElementById('passwordError');
+
+const submitBtn = document.getElementById('submitBtn');
+
+function validatePassword(){
+
+    if(confirmPassword.value === ''){
+
+        passwordError.style.display = 'none';
+
+        confirmPassword.classList.remove('is-invalid');
+
+        submitBtn.disabled = false;
+
+        return;
+    }
+
+    if(password.value !== confirmPassword.value){
+
+        passwordError.style.display = 'block';
+
+        confirmPassword.classList.add('is-invalid');
+
+        submitBtn.disabled = true;
+
+    }else{
+
+        passwordError.style.display = 'none';
+
+        confirmPassword.classList.remove('is-invalid');
+
+        submitBtn.disabled = false;
+
+    }
+
+}
+
+password.addEventListener('keyup', validatePassword);
+
+confirmPassword.addEventListener('keyup', validatePassword);
+
+</script>
+<script>
+    
 
     const sidebar = document.getElementById('sidebar');
 

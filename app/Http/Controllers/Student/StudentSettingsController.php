@@ -30,6 +30,14 @@ class StudentSettingsController extends Controller
             'password' =>
                 'nullable|min:8|confirmed',
 
+        ], [
+
+            'password.confirmed' =>
+                'New password and confirm password do not match.',
+
+            'password.min' =>
+                'Password must be at least 8 characters.',
+
         ]);
 
         /*
@@ -69,6 +77,7 @@ class StudentSettingsController extends Controller
             $user->password = Hash::make(
                 $request->password
             );
+
         }
 
         $user->save();
@@ -77,5 +86,7 @@ class StudentSettingsController extends Controller
             'success',
             'Settings updated successfully!'
         );
+
     }
+
 }
