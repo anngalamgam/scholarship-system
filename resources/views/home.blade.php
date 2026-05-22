@@ -44,20 +44,22 @@
             padding:20px;
             overflow-y:auto;
             transition:.3s;
-            z-index:1050;
+             z-index:1040;
         }
 
         .sidebar.show{
             left:0;
         }
 
-        .brand{
-            color:white;
-            font-size:24px;
-            font-weight:700;
-            text-align:center;
-            margin-bottom:40px;
-        }
+       .brand{
+    color:white;
+    font-size:24px;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:40px;
+    line-height:1.3;
+    word-break:break-word;
+}
 
         .sidebar a{
             display:flex;
@@ -115,7 +117,7 @@
             box-shadow:0 5px 20px rgba(0,0,0,.05);
             position:sticky;
             top:0;
-            z-index:1040;
+            z-index:1030;
         }
 
         .menu-btn{
@@ -371,6 +373,21 @@
                 width:100%;
             }
         }
+
+#pdsModal .btn-close{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background-color:rgba(255,255,255,.15);
+    opacity:1;
+}
+.modal{
+    z-index:2000 !important;
+}
+
+.modal-backdrop{
+    z-index:1990 !important;
+}
         /* PDF ALERT */
 
 .pdf-alert{
@@ -1668,7 +1685,7 @@
                 class="btn btn-success d-none"
                 id="submitBtn">
 
-            Save PDS
+            Save PDF
 
         </button>
 

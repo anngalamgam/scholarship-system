@@ -87,8 +87,8 @@ td{
 
 .student-profile{
     display:inline-block;
-    background:#fff200;
-    color:#1737ff;
+    
+    color:#000000;
     font-size:32px;
     font-weight:900;
     padding:4px 14px;
@@ -96,24 +96,24 @@ td{
 }
 
 .section-purple{
-    background:#ff00ff;
-    color:#fff;
+    background:#00d0ff;
+    color:#000000;
     font-size:18px;
     font-weight:900;
     padding-left:5px;
 }
 
 .section-blue{
-    background:#003cff;
-    color:#fff;
+    background:#00d0ff;
+    color:#000000;
     font-size:18px;
     font-weight:900;
     padding-left:5px;
 }
 
 .section-green{
-    background:#00c83a;
-    color:#fff;
+    background:#00d0ff;
+    color:#000000;
     font-size:18px;
     font-weight:900;
     padding-left:5px;
