@@ -244,7 +244,7 @@
 
                         <tr>
 
-                            <th>ID</th>
+                           
                             <th>FULL NAME</th>
                             <th>COURSE</th>
                             <th>SCHOOL</th>
@@ -263,9 +263,7 @@
 
                         <tr>
 
-                            <td class="fw-bold">
-                                #{{ $student->id }}
-                            </td>
+                           
 
                             <td>
 
