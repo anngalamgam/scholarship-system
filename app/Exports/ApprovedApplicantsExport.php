@@ -17,51 +17,53 @@ class ApprovedApplicantsExport implements
     */
 
     public function collection()
-    {
-        return ApprovedApplicant::select(
+{
+    return ApprovedApplicant::get()->values()->map(function ($student, $index) {
+
+        return [
+
+            'scholar_id' =>
+                '2026-' . str_pad($index + 1, 5, '0', STR_PAD_LEFT),
+
+            'first_name' => $student->first_name,
+            'middle_name' => $student->middle_name,
+            'last_name' => $student->last_name,
+
+            'age' => $student->age,
+            'birth_date' => $student->birth_date,
+            'gender' => $student->gender,
+
+            'contact_number' => $student->contact_number,
+            'email' => $student->email,
+            'address' => $student->address,
+
+            'elementary_school' => $student->elementary_school,
+            'elementary_year' => $student->elementary_year,
+
+            'highschool_school' => $student->highschool_school,
+            'highschool_year' => $student->highschool_year,
+
+            'college_school' => $student->college_school,
+            'college_course' => $student->college_course,
+           
+
+            'father_name' => $student->father_name,
+            'father_occupation' => $student->father_occupation,
+
+            'mother_name' => $student->mother_name,
+            'mother_occupation' => $student->mother_occupation,
+
+            'guardian_name' => $student->guardian_name,
+            'guardian_contact' => $student->guardian_contact,
+
+            'annual' => $student->annual,
 
             
 
-            'first_name',
-            'middle_name',
-            'last_name',
+        ];
 
-            'age',
-            'birth_date',
-            'gender',
-
-            'contact_number',
-            'email',
-            'address',
-
-            'elementary_school',
-            'elementary_year',
-
-            'highschool_school',
-            'highschool_year',
-
-            'college_school',
-            'college_course',
-            'college_year',
-
-            'father_name',
-            'father_occupation',
-
-            'mother_name',
-            'mother_occupation',
-
-            'guardian_name',
-            'guardian_contact',
-
-            'annual',
-
-            
-
-            'created_at'
-
-        )->get();
-    }
-
+    });
+}
     /*
     |--------------------------------------------------------------------------
     | TABLE HEADERS
@@ -72,8 +74,8 @@ class ApprovedApplicantsExport implements
     {
         return [
 
-            
-
+             
+            'CTRL NO.',
             'FIRST NAME',
             'MIDDLE NAME',
             'LAST NAME',
@@ -94,7 +96,7 @@ class ApprovedApplicantsExport implements
 
             'COLLEGE SCHOOL',
             'COLLEGE COURSE',
-            'COLLEGE YEAR',
+            
 
             'FATHER NAME',
             'FATHER OCCUPATION',
@@ -108,7 +110,7 @@ class ApprovedApplicantsExport implements
             'ANNUAL INCOME',
 
          
-            'APPROVED DATE'
+            
 
         ];
     }

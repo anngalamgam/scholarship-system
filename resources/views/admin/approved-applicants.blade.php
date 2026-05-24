@@ -110,12 +110,11 @@
 
                         <tr>
 
-                            <td>
+                          <td>
 
-                                {{ $student->id }}
+                            {{ '2026-' . str_pad($loop->iteration, 5, '0', STR_PAD_LEFT) }}
 
-                            </td>
-
+                        </td>
                             <td class="fw-bold text-uppercase">
 
                                 {{ $student->first_name }}
