@@ -17,14 +17,17 @@ class ApprovedApplicantController extends Controller
     */
 
     public function index()
-    {
-        $approved = ApprovedApplicant::latest()->get();
+{
+    $approved = ApprovedApplicant::orderBy(
+        'created_at',
+        'asc'
+    )->get();
 
-        return view(
-            'admin.approved-applicants',
-            compact('approved')
-        );
-    }
+    return view(
+        'admin.approved-applicants',
+        compact('approved')
+    );
+}
 
     /*
     |--------------------------------------------------------------------------
