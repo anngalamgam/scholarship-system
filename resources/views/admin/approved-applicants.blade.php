@@ -110,11 +110,12 @@
 
                         <tr>
 
-                          <td>
+                            <td>
 
-                            {{ '2026-' . str_pad($loop->iteration, 5, '0', STR_PAD_LEFT) }}
+                                {{ '2026-' . str_pad($loop->iteration, 5, '0', STR_PAD_LEFT) }}
 
-                        </td>
+                            </td>
+
                             <td class="fw-bold text-uppercase">
 
                                 {{ $student->first_name }}
@@ -307,16 +308,27 @@
     box-shadow:0 4px 15px rgba(0,0,0,0.08);
 }
 
-/* CARD */
-
+/* FIX: changed overflow:hidden to visible so table scrollbar is not clipped */
 .card{
-    overflow:hidden;
+    overflow:visible;
 }
 
 /* BADGE */
 
 .badge{
     border-radius:30px;
+}
+
+/* FIX: ensure table-responsive scrolls horizontally on desktop too */
+.table-responsive{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    width:100%;
+}
+
+/* FIX: moved min-width here globally, not just inside mobile media query */
+table{
+    min-width:750px;
 }
 
 /* ANIMATION */
@@ -343,10 +355,6 @@
 
     .search-input{
         width:100%;
-    }
-
-    table{
-        min-width:750px;
     }
 
 }

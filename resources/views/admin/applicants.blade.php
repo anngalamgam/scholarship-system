@@ -244,7 +244,6 @@
 
                         <tr>
 
-                           
                             <th>FULL NAME</th>
                             <th>COURSE</th>
                             <th>SCHOOL</th>
@@ -262,8 +261,6 @@
                         @forelse($applicants as $student)
 
                         <tr>
-
-                           
 
                             <td>
 
@@ -382,8 +379,9 @@
     box-shadow:0 4px 15px rgba(0,0,0,0.08);
 }
 
+/* FIX: changed overflow:hidden to visible so table scrollbar is not clipped */
 .card{
-    overflow:hidden;
+    overflow:visible;
 }
 
 .btn{
@@ -400,6 +398,18 @@
     width:260px;
     height:45px;
     border:1px solid #dcdcdc;
+}
+
+/* FIX: ensure table-responsive scrolls horizontally on desktop too */
+.table-responsive{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    width:100%;
+}
+
+/* FIX: moved min-width here globally, not just inside mobile media query */
+table{
+    min-width:900px;
 }
 
 /* ACTION BUTTONS */
@@ -572,10 +582,6 @@
         width:auto;
         font-size:12px;
         padding:6px 10px;
-    }
-
-    table{
-        min-width:900px;
     }
 
 }
