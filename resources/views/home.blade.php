@@ -388,6 +388,7 @@
 .modal-backdrop{
     z-index:1990 !important;
 }
+
         /* PDF ALERT */
 
 .pdf-alert{
@@ -416,30 +417,21 @@
 .pdf-alert-icon{
     width:55px;
     height:55px;
-
     min-width:55px;
-
     border-radius:50%;
-
     background:rgba(255,255,255,.18);
-
     display:flex;
     align-items:center;
     justify-content:center;
-
     font-size:22px;
 }
 
 .pdf-close{
     margin-left:auto;
-
     border:none;
     background:none;
-
     color:white;
-
     font-size:20px;
-
     cursor:pointer;
 }
 
@@ -460,7 +452,6 @@
         right:10px;
         width:auto;
         max-width:none;
-
         transform:translateY(-20px);
         opacity:0;
     }
@@ -472,7 +463,6 @@
 
 }
 
-
 .sidebar{
     z-index:1050;
 }
@@ -481,40 +471,103 @@
     z-index:1060;
 }
 
+        /* ===== DEADLINE STYLES ===== */
+
+        .btn-deadline-disabled{
+            opacity:0.45 !important;
+            cursor:not-allowed !important;
+            pointer-events:none !important;
+            filter:grayscale(1) !important;
+            animation:none !important;
+            box-shadow:none !important;
+            transform:none !important;
+        }
+
+        .deadline-badge{
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            background:#fee2e2;
+            color:#991b1b;
+            border:1px solid #fca5a5;
+            border-radius:10px;
+            padding:6px 14px;
+            font-size:13px;
+            font-weight:600;
+        }
+
+        .sidebar-deadline-badge{
+            display:flex;
+            align-items:center;
+            gap:8px;
+            color:#fca5a5;
+            padding:8px 16px;
+            font-size:13px;
+            font-weight:500;
+            margin-bottom:10px;
+            cursor:not-allowed;
+        }
+
+        .deadline-alert-banner{
+            background:linear-gradient(135deg,#7f1d1d,#991b1b);
+            color:white;
+            border-radius:16px;
+            padding:16px 20px;
+            margin-bottom:20px;
+            display:flex;
+            align-items:center;
+            gap:14px;
+            box-shadow:0 4px 15px rgba(153,27,27,.3);
+        }
+
+        .deadline-alert-banner i{
+            font-size:26px;
+            min-width:30px;
+        }
+
+        .deadline-alert-banner h6{
+            font-weight:700;
+            margin:0 0 3px;
+            font-size:15px;
+        }
+
+        .deadline-alert-banner p{
+            margin:0;
+            font-size:13px;
+            opacity:.9;
+        }
+
     </style>
 
 </head>
 
 <body>
+
     <!-- PDF ALERT -->
-<div class="pdf-alert" id="pdfAlert">
+    <div class="pdf-alert" id="pdfAlert">
 
-    <div class="pdf-alert-icon">
+        <div class="pdf-alert-icon">
+            <i class="fa-solid fa-file-circle-xmark"></i>
+        </div>
 
-        <i class="fa-solid fa-file-circle-xmark"></i>
+        <div>
+
+            <h5 class="mb-1">
+                Fill-up Form First
+            </h5>
+
+            <p class="mb-0">
+                You need to complete and submit your scholar form before downloading the PDF.
+            </p>
+
+        </div>
+
+        <button class="pdf-close"
+                onclick="closePdfAlert()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
 
     </div>
-
-    <div>
-
-        <h5 class="mb-1">
-            Fill-up Form First
-        </h5>
-
-        <p class="mb-0">
-            You need to complete and submit your scholar form before downloading the PDF.
-        </p>
-
-    </div>
-
-    <button class="pdf-close"
-            onclick="closePdfAlert()">
-
-        <i class="fa-solid fa-xmark"></i>
-
-    </button>
-
-</div>
 
     <!-- MOBILE TOPBAR -->
     <div class="mobile-topbar">
@@ -525,9 +578,7 @@
 
         <button class="menu-btn"
                 id="menuBtn">
-
             <i class="fa-solid fa-bars"></i>
-
         </button>
 
     </div>
@@ -546,74 +597,55 @@
         </a>
 
         <a href="{{ route('student.settings') }}">
-        <i class="fa fa-gear"></i> Settings
-    </a>
+            <i class="fa fa-gear"></i> Settings
+        </a>
 
+        {{-- FILL-UP FORM SIDEBAR LINK — disabled if deadline passed --}}
         <a href="#"
+           id="sidebarFillupLink"
            data-bs-toggle="modal"
            data-bs-target="#pdsModal">
-
             <i class="fa-solid fa-file-lines"></i>
             Fill-up Form
-
         </a>
+
         {{-- DOWNLOAD PDF SIDEBAR BUTTON --}}
-
-@if($record)
-
-    <a href="{{ route('student.pdf') }}">
-
-        <i class="fa-solid fa-file-pdf"></i>
-        Download PDF
-
-    </a>
-
-@else
-
-    <a href="javascript:void(0)"
-       onclick="showPdfAlert()">
-
-        <i class="fa-solid fa-file-pdf"></i>
-        Download PDF
-
-    </a>
-
-@endif
-
-       
-
-     
+        @if($record)
+            <a href="{{ route('student.pdf') }}">
+                <i class="fa-solid fa-file-pdf"></i>
+                Download PDF
+            </a>
+        @else
+            <a href="javascript:void(0)"
+               onclick="showPdfAlert()">
+                <i class="fa-solid fa-file-pdf"></i>
+                Download PDF
+            </a>
+        @endif
 
         <form method="POST"
               action="{{ route('logout') }}">
-
             @csrf
-
             <button type="submit"
                     class="logout-btn">
-
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Logout
-
             </button>
-
         </form>
 
     </div>
 
-    <script>document.addEventListener('click', function(e){
-
-    if(
-        window.innerWidth <= 991 &&
-        !sidebar.contains(e.target) &&
-        !menuBtn.contains(e.target)
-    ){
-
-        sidebar.classList.remove('show');
-
-    }
-
-});</script>
+    <script>
+        document.addEventListener('click', function(e){
+            if(
+                window.innerWidth <= 991 &&
+                !sidebar.contains(e.target) &&
+                !menuBtn.contains(e.target)
+            ){
+                sidebar.classList.remove('show');
+            }
+        });
+    </script>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
@@ -633,240 +665,139 @@
 
             </div>
 
-            
+        </div>
 
+        <!-- DEADLINE BANNER — shown via JS if overdue -->
+        <div class="deadline-alert-banner d-none" id="deadlineBanner">
+            <i class="fa-solid fa-calendar-xmark"></i>
+            <div>
+                <h6>Application Period Closed</h6>
+                <p>The deadline for submitting the scholar application form was May 28, 2026. The form is no longer accepting submissions.</p>
+            </div>
         </div>
 
         <!-- ROW -->
         <div class="row g-4">
 
-   @if(session('success'))
-
-<!-- FLOATING SUCCESS ALERT -->
-<div class="floating-alert success-alert">
-
-    <div class="alert-icon">
-        <i class="fa-solid fa-circle-check"></i>
-    </div>
-
-    <div class="alert-content">
-
-        <h5>
-            Form Successfully Submitted
-        </h5>
-
-        <p>
-            Your scholar application form has been submitted successfully.
-            You can now print or download your PDF.
-        </p>
-
-    </div>
-
-</div>
-
-@endif
-
-
-@if(session('already_submitted'))
-
-<!-- FLOATING ERROR ALERT -->
-<div class="floating-alert submitted-alert">
-
-    <div class="alert-icon">
-        <i class="fa-solid fa-ban"></i>
-    </div>
-
-    <div class="alert-content">
-
-        <h5>
-            You Already Submitted
-        </h5>
-
-        <p>
-            You already created your scholar application form.
-            You cannot create another form.
-        </p>
-
-    </div>
-
-</div>
-
-@endif
-
-
-<style>
-
-.floating-alert{
-    position:fixed;
-
-    top:90px;
-    right:20px;
-
-    width:380px;
-    max-width:90%;
-
-    z-index:99999;
-
-    display:flex;
-    align-items:flex-start;
-    gap:15px;
-
-    padding:18px 20px;
-
-    border-radius:20px;
-
-    backdrop-filter:blur(12px);
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,.25);
-
-    animation:
-    slideIn .5s ease,
-    floatAlert 3s ease-in-out infinite;
-
-    overflow:hidden;
-}
-
-/* SUCCESS */
-
-.success-alert{
-    background:linear-gradient(
-        135deg,
-        rgba(34,197,94,.95),
-        rgba(22,163,74,.92)
-    );
-
-    color:white;
-}
-
-/* ERROR */
-
-.submitted-alert{
-    background:linear-gradient(
-        135deg,
-        rgba(239,68,68,.95),
-        rgba(185,28,28,.92)
-    );
-
-    color:white;
-}
-
-/* ICON */
-
-.alert-icon{
-    width:58px;
-    height:58px;
-
-    min-width:58px;
-
-    border-radius:50%;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:rgba(255,255,255,.18);
-
-    font-size:24px;
-
-    animation:pulseIcon 2s infinite;
-}
-
-/* CONTENT */
-
-.alert-content h5{
-    margin:0 0 6px;
-    font-size:18px;
-    font-weight:800;
-}
-
-.alert-content p{
-    margin:0;
-    font-size:14px;
-    line-height:1.6;
-    opacity:.95;
-}
-
-/* SLIDE ANIMATION */
-
-@keyframes slideIn{
-
-    from{
-        opacity:0;
-        transform:translateX(100px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateX(0);
-    }
-}
-
-/* FLOAT EFFECT */
-
-@keyframes floatAlert{
-
-    0%{
-        transform:translateY(0);
-    }
-
-    50%{
-        transform:translateY(-6px);
-    }
-
-    100%{
-        transform:translateY(0);
-    }
-}
-
-/* ICON PULSE */
-
-@keyframes pulseIcon{
-
-    0%{
-        transform:scale(1);
-    }
-
-    50%{
-        transform:scale(1.08);
-    }
-
-    100%{
-        transform:scale(1);
-    }
-}
-
-/* MOBILE */
-
-@media(max-width:768px){
-
-    .floating-alert{
-        top:80px;
-        right:10px;
-        left:10px;
-
-        width:auto;
-
-        padding:16px;
-    }
-
-    .alert-content h5{
-        font-size:16px;
-    }
-
-    .alert-content p{
-        font-size:13px;
-    }
-
-    .alert-icon{
-        width:50px;
-        height:50px;
-        min-width:50px;
-        font-size:20px;
-    }
-
-}
-</style>
+            @if(session('success'))
+            <!-- FLOATING SUCCESS ALERT -->
+            <div class="floating-alert success-alert">
+
+                <div class="alert-icon">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+
+                <div class="alert-content">
+                    <h5>Form Successfully Submitted</h5>
+                    <p>Your scholar application form has been submitted successfully. You can now print or download your PDF.</p>
+                </div>
+
+            </div>
+            @endif
+
+            @if(session('already_submitted'))
+            <!-- FLOATING ERROR ALERT -->
+            <div class="floating-alert submitted-alert">
+
+                <div class="alert-icon">
+                    <i class="fa-solid fa-ban"></i>
+                </div>
+
+                <div class="alert-content">
+                    <h5>You Already Submitted</h5>
+                    <p>You already created your scholar application form. You cannot create another form.</p>
+                </div>
+
+            </div>
+            @endif
+
+            <style>
+
+                .floating-alert{
+                    position:fixed;
+                    top:90px;
+                    right:20px;
+                    width:380px;
+                    max-width:90%;
+                    z-index:99999;
+                    display:flex;
+                    align-items:flex-start;
+                    gap:15px;
+                    padding:18px 20px;
+                    border-radius:20px;
+                    backdrop-filter:blur(12px);
+                    box-shadow:0 10px 30px rgba(0,0,0,.25);
+                    animation:slideIn .5s ease, floatAlert 3s ease-in-out infinite;
+                    overflow:hidden;
+                }
+
+                .success-alert{
+                    background:linear-gradient(135deg,rgba(34,197,94,.95),rgba(22,163,74,.92));
+                    color:white;
+                }
+
+                .submitted-alert{
+                    background:linear-gradient(135deg,rgba(239,68,68,.95),rgba(185,28,28,.92));
+                    color:white;
+                }
+
+                .alert-icon{
+                    width:58px;
+                    height:58px;
+                    min-width:58px;
+                    border-radius:50%;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    background:rgba(255,255,255,.18);
+                    font-size:24px;
+                    animation:pulseIcon 2s infinite;
+                }
+
+                .alert-content h5{
+                    margin:0 0 6px;
+                    font-size:18px;
+                    font-weight:800;
+                }
+
+                .alert-content p{
+                    margin:0;
+                    font-size:14px;
+                    line-height:1.6;
+                    opacity:.95;
+                }
+
+                @keyframes slideIn{
+                    from{ opacity:0; transform:translateX(100px); }
+                    to{ opacity:1; transform:translateX(0); }
+                }
+
+                @keyframes floatAlert{
+                    0%{ transform:translateY(0); }
+                    50%{ transform:translateY(-6px); }
+                    100%{ transform:translateY(0); }
+                }
+
+                @keyframes pulseIcon{
+                    0%{ transform:scale(1); }
+                    50%{ transform:scale(1.08); }
+                    100%{ transform:scale(1); }
+                }
+
+                @media(max-width:768px){
+                    .floating-alert{
+                        top:80px;
+                        right:10px;
+                        left:10px;
+                        width:auto;
+                        padding:16px;
+                    }
+                    .alert-content h5{ font-size:16px; }
+                    .alert-content p{ font-size:13px; }
+                    .alert-icon{ width:50px; height:50px; min-width:50px; font-size:20px; }
+                }
+
+            </style>
 
             <!-- WELCOME -->
             <div class="col-lg-8">
@@ -878,9 +809,7 @@
                         <div>
 
                             <h2 class="fw-bold mb-3">
-                                Welcome <span class="fw-semibold">
-                    {{ auth()->user()->name }}
-                </span> 👋
+                                Welcome <span class="fw-semibold">{{ auth()->user()->name }}</span> 👋
                             </h2>
 
                             <p class="mb-4">
@@ -888,396 +817,300 @@
                             </p>
 
                             <button class="btn btn-light btn-lg rounded-pill px-4 glowing-form-btn"
-                            data-bs-toggle="modal"
-                            data-bs-target="#pdsModal">
+                                    id="welcomeFillupBtn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#pdsModal">
+                                <i class="fa-solid fa-pen-to-square me-2"></i>
+                                Fill-up your form
+                            </button>
 
-                        <i class="fa-solid fa-pen-to-square me-2"></i>
-
-                        Fill-up your form
-
-                    </button>
+                            <!-- Deadline badge injected here by JS -->
+                            <div id="welcomeDeadlineBadge" class="d-none mt-3">
+                                <span class="deadline-badge">
+                                    <i class="fa-solid fa-clock"></i>
+                                    Deadline passed — May 28, 2026
+                                </span>
+                            </div>
 
                         </div>
-
-                       
 
                     </div>
 
                 </div>
 
             </div>
-            <style>.glowing-form-btn{
-    position:relative;
 
-    background:linear-gradient(135deg,#38bdf8,#2563eb) !important;
+            <style>
 
-    color:white !important;
+                .glowing-form-btn{
+                    position:relative;
+                    background:linear-gradient(135deg,#38bdf8,#2563eb) !important;
+                    color:white !important;
+                    border:none !important;
+                    font-weight:700;
+                    padding:14px 35px !important;
+                    overflow:hidden;
+                    transition:.4s ease;
+                    animation:glowButton 2s infinite, floatButton 3s ease-in-out infinite;
+                    box-shadow:0 0 10px rgba(56,189,248,.6), 0 0 25px rgba(37,99,235,.5);
+                }
 
-    border:none !important;
+                .glowing-form-btn::before{
+                    content:'';
+                    position:absolute;
+                    top:0;
+                    left:-100%;
+                    width:100%;
+                    height:100%;
+                    background:linear-gradient(120deg,transparent,rgba(255,255,255,.5),transparent);
+                    transition:.6s;
+                }
 
-    font-weight:700;
+                .glowing-form-btn:hover{
+                    transform:translateY(-4px) scale(1.03);
+                    color:white !important;
+                    box-shadow:0 0 20px rgba(56,189,248,.9), 0 0 45px rgba(37,99,235,.8);
+                }
 
-    padding:14px 35px !important;
+                .glowing-form-btn:hover::before{
+                    left:100%;
+                }
 
-    overflow:hidden;
+                @keyframes glowButton{
+                    0%{ box-shadow:0 0 10px rgba(56,189,248,.5), 0 0 20px rgba(37,99,235,.4); }
+                    50%{ box-shadow:0 0 20px rgba(56,189,248,.9), 0 0 45px rgba(37,99,235,.8); }
+                    100%{ box-shadow:0 0 10px rgba(56,189,248,.5), 0 0 20px rgba(37,99,235,.4); }
+                }
 
-    transition:.4s ease;
+                @keyframes floatButton{
+                    0%{ transform:translateY(0); }
+                    50%{ transform:translateY(-4px); }
+                    100%{ transform:translateY(0); }
+                }
 
-    animation:
-    glowButton 2s infinite,
-    floatButton 3s ease-in-out infinite;
+                @media(max-width:768px){
+                    .glowing-form-btn{
+                        width:100%;
+                        font-size:15px !important;
+                        padding:13px 20px !important;
+                    }
+                }
 
-    box-shadow:
-    0 0 10px rgba(56,189,248,.6),
-    0 0 25px rgba(37,99,235,.5);
-}
-
-/* SHINE EFFECT */
-
-.glowing-form-btn::before{
-    content:'';
-
-    position:absolute;
-
-    top:0;
-    left:-100%;
-
-    width:100%;
-    height:100%;
-
-    background:linear-gradient(
-        120deg,
-        transparent,
-        rgba(255,255,255,.5),
-        transparent
-    );
-
-    transition:.6s;
-}
-
-/* HOVER */
-
-.glowing-form-btn:hover{
-    transform:translateY(-4px) scale(1.03);
-
-    color:white !important;
-
-    box-shadow:
-    0 0 20px rgba(56,189,248,.9),
-    0 0 45px rgba(37,99,235,.8);
-}
-
-/* SHINE MOVE */
-
-.glowing-form-btn:hover::before{
-    left:100%;
-}
-
-/* GLOW ANIMATION */
-
-@keyframes glowButton{
-
-    0%{
-        box-shadow:
-        0 0 10px rgba(56,189,248,.5),
-        0 0 20px rgba(37,99,235,.4);
-    }
-
-    50%{
-        box-shadow:
-        0 0 20px rgba(56,189,248,.9),
-        0 0 45px rgba(37,99,235,.8);
-    }
-
-    100%{
-        box-shadow:
-        0 0 10px rgba(56,189,248,.5),
-        0 0 20px rgba(37,99,235,.4);
-    }
-}
-
-/* FLOAT EFFECT */
-
-@keyframes floatButton{
-
-    0%{
-        transform:translateY(0);
-    }
-
-    50%{
-        transform:translateY(-4px);
-    }
-
-    100%{
-        transform:translateY(0);
-    }
-}
-
-/* MOBILE */
-
-@media(max-width:768px){
-
-    .glowing-form-btn{
-        width:100%;
-        font-size:15px !important;
-        padding:13px 20px !important;
-    }
-
-}</style>
+            </style>
 
             <!-- PROGRESS -->
             <div class="col-lg-4">
 
-    <div class="dashboard-card completion-card">
+                <div class="dashboard-card completion-card">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
 
-            <h5 class="fw-bold mb-0 text-white">
-                Form Completion
-            </h5>
+                        <h5 class="fw-bold mb-0 text-white">
+                            Form Completion
+                        </h5>
 
-            <div class="completion-icon">
+                        <div class="completion-icon">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
 
-                <i class="fa-solid fa-chart-line"></i>
+                    </div>
+
+                    <div class="progress custom-progress mb-3">
+
+                        <div class="progress-bar custom-progress-bar
+                            {{ $completion == 100 ? 'bg-success' : 'bg-danger' }}"
+                             role="progressbar"
+                             style="width: {{ $completion }}%">
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <h2 class="fw-bold {{ $completion == 100 ? 'text-success' : 'text-danger' }}">
+                            {{ $completion }}%
+                        </h2>
+
+                        @if($completion == 100)
+                            <span class="badge bg-success px-3 py-2 rounded-pill">Completed</span>
+                        @else
+                            <span class="badge bg-danger px-3 py-2 rounded-pill">Incomplete</span>
+                        @endif
+
+                    </div>
+
+                </div>
 
             </div>
 
-        </div>
-
-        <!-- PROGRESS -->
-        <div class="progress custom-progress mb-3">
-
-            <div class="progress-bar custom-progress-bar
-                {{ $completion == 100 ? 'bg-success' : 'bg-danger' }}"
-                 role="progressbar"
-                 style="width: {{ $completion }}%">
-
-            </div>
-
-        </div>
-
-        <!-- PERCENT -->
-        <div class="d-flex justify-content-between align-items-center">
-
-            <h2 class="fw-bold
-                {{ $completion == 100 ? 'text-success' : 'text-danger' }}">
-
-                {{ $completion }}%
-
-            </h2>
-
-            @if($completion == 100)
-
-                <span class="badge bg-success px-3 py-2 rounded-pill">
-
-                    Completed
-
-                </span>
-
-            @else
-
-                <span class="badge bg-danger px-3 py-2 rounded-pill">
-
-                    Incomplete
-
-                </span>
-
-            @endif
-
-        </div>
-
-    </div>
-
-</div>
-<style>
-    /* COMPLETION CARD */
-
-.completion-card{
-    background:linear-gradient(135deg,#0f172a,#1e293b);
-
-    border-radius:24px;
-
-    padding:25px;
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,.25);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    transition:.4s ease;
-
-    
-}
-
-/* HOVER */
-
-.completion-card:hover{
-    transform:translateY(-5px);
-
-    box-shadow:
-    0 15px 40px rgba(56,189,248,.15);
-}
-
-/* ICON */
-
-.completion-icon{
-    width:50px;
-    height:50px;
-
-    border-radius:16px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:linear-gradient(135deg,#38bdf8,#2563eb);
-
-    color:white;
-
-    font-size:20px;
-
-    box-shadow:
-    0 0 20px rgba(56,189,248,.4);
-}
-
-/* PROGRESS */
-
-.custom-progress{
-    height:14px;
-
-    border-radius:50px;
-
-    background:rgba(255,255,255,.1);
-
-    overflow:hidden;
-}
-
-/* BAR */
-
-.custom-progress-bar{
-    border-radius:50px;
-
-    transition:width 1s ease;
-
-    animation:glowProgress 2s infinite;
-}
-
-/* FLOAT */
-
-@keyframes floatCard{
-
-    0%{
-        transform:translateY(0);
-    }
-
-    50%{
-        transform:translateY(-5px);
-    }
-
-    100%{
-        transform:translateY(0);
-    }
-}
-
-/* GLOW */
-
-@keyframes glowProgress{
-
-    0%{
-        box-shadow:0 0 5px rgba(255,255,255,.2);
-    }
-
-    50%{
-        box-shadow:0 0 20px rgba(255,255,255,.5);
-    }
-
-    100%{
-        box-shadow:0 0 5px rgba(255,255,255,.2);
-    }
-}
-
-/* MOBILE */
-
-@media(max-width:768px){
-
-    .completion-card{
-        padding:20px;
-    }
-
-    .completion-icon{
-        width:45px;
-        height:45px;
-        font-size:18px;
-    }
-
-}
-</style>
-
-        <!-- QUICK ACTIONS -->
-        <div class="row g-4 mt-1">
-
-            <div class="col-lg-8">
-
-                <div class="dashboard-card">
-
-                    <h4 class="fw-bold mb-4">
-                        Quick Actions
-                    </h4>
-
-                    <div class="row g-3">
-
-                        <div class="col-md-4">
-
-                            <button class="btn btn-primary w-100 quick-btn"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#pdsModal">
-
-                                <i class="fa-solid fa-file-lines mb-2"></i>
-                                <br>
-                                Fill-up Form
-
-                            </button>
+            <style>
+
+                .completion-card{
+                    background:linear-gradient(135deg,#0f172a,#1e293b);
+                    border-radius:24px;
+                    padding:25px;
+                    box-shadow:0 10px 30px rgba(0,0,0,.25);
+                    border:1px solid rgba(255,255,255,.08);
+                    transition:.4s ease;
+                }
+
+                .completion-card:hover{
+                    transform:translateY(-5px);
+                    box-shadow:0 15px 40px rgba(56,189,248,.15);
+                }
+
+                .completion-icon{
+                    width:50px;
+                    height:50px;
+                    border-radius:16px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    background:linear-gradient(135deg,#38bdf8,#2563eb);
+                    color:white;
+                    font-size:20px;
+                    box-shadow:0 0 20px rgba(56,189,248,.4);
+                }
+
+                .custom-progress{
+                    height:14px;
+                    border-radius:50px;
+                    background:rgba(255,255,255,.1);
+                    overflow:hidden;
+                }
+
+                .custom-progress-bar{
+                    border-radius:50px;
+                    transition:width 1s ease;
+                    animation:glowProgress 2s infinite;
+                }
+
+                @keyframes floatCard{
+                    0%{ transform:translateY(0); }
+                    50%{ transform:translateY(-5px); }
+                    100%{ transform:translateY(0); }
+                }
+
+                @keyframes glowProgress{
+                    0%{ box-shadow:0 0 5px rgba(255,255,255,.2); }
+                    50%{ box-shadow:0 0 20px rgba(255,255,255,.5); }
+                    100%{ box-shadow:0 0 5px rgba(255,255,255,.2); }
+                }
+
+                @media(max-width:768px){
+                    .completion-card{ padding:20px; }
+                    .completion-icon{ width:45px; height:45px; font-size:18px; }
+                }
+
+            </style>
+
+            <!-- QUICK ACTIONS -->
+            <div class="row g-4 mt-1">
+
+                <div class="col-lg-8">
+
+                    <div class="dashboard-card">
+
+                        <h4 class="fw-bold mb-4">
+                            Quick Actions
+                        </h4>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-4">
+
+                                <button class="btn btn-primary w-100 quick-btn"
+                                        id="quickFillupBtn"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#pdsModal">
+                                    <i class="fa-solid fa-file-lines mb-2"></i>
+                                    <br>
+                                    Fill-up Form
+                                </button>
+
+                                <!-- Deadline badge for quick action button -->
+                                <div id="quickDeadlineBadge" class="d-none mt-2 text-center">
+                                    <span class="deadline-badge" style="font-size:11px; padding:4px 10px;">
+                                        <i class="fa-solid fa-clock"></i> Deadline passed
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            {{-- DOWNLOAD PDF BODY BUTTON --}}
+                            <div class="col-md-4">
+
+                                @if($record)
+                                    <a href="{{ route('student.pdf') }}"
+                                       class="text-decoration-none">
+                                        <button class="btn btn-danger w-100 quick-btn">
+                                            <i class="fa-solid fa-file-pdf mb-2"></i>
+                                            <br>
+                                            Download PDF
+                                        </button>
+                                    </a>
+                                @else
+                                    <button type="button"
+                                            class="btn btn-danger w-100 quick-btn"
+                                            onclick="showPdfAlert()">
+                                        <i class="fa-solid fa-file-pdf mb-2"></i>
+                                        <br>
+                                        Download PDF
+                                    </button>
+                                @endif
+
+                            </div>
 
                         </div>
 
-                       
+                    </div>
 
-                       {{-- DOWNLOAD PDF BODY BUTTON --}}
+                </div>
 
-<div class="col-md-4">
+                <!-- ACTIVITY -->
+                <div class="col-lg-4">
 
-    @if($record)
+                    <div class="dashboard-card">
 
-        <a href="{{ route('student.pdf') }}"
-           class="text-decoration-none">
+                        <h4 class="fw-bold mb-4">
+                            Recent Activity
+                        </h4>
 
-            <button class="btn btn-danger w-100 quick-btn">
+                        @if($record)
 
-                <i class="fa-solid fa-file-pdf mb-2"></i>
-                <br>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fa-solid fa-file-circle-check"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">Scholar Form Submitted</div>
+                                    <small class="text-muted">{{ $record->created_at->diffForHumans() }}</small>
+                                </div>
+                            </div>
 
-                Download PDF
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fa-solid fa-user-pen"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">Profile Completed</div>
+                                    <small class="text-muted">{{ $record->updated_at->diffForHumans() }}</small>
+                                </div>
+                            </div>
 
-            </button>
+                        @else
 
-        </a>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">No Activity Yet</div>
+                                    <small class="text-muted">Please fill-up your scholar form</small>
+                                </div>
+                            </div>
 
-    @else
-
-        <button type="button"
-                class="btn btn-danger w-100 quick-btn"
-                onclick="showPdfAlert()">
-
-            <i class="fa-solid fa-file-pdf mb-2"></i>
-            <br>
-
-            Download PDF
-
-        </button>
-
-    @endif
-
-</div>
+                        @endif
 
                     </div>
 
@@ -1285,88 +1118,9 @@
 
             </div>
 
-        <!-- ACTIVITY -->
-<div class="col-lg-4">
-
-    <div class="dashboard-card">
-
-        <h4 class="fw-bold mb-4">
-            Recent Activity
-        </h4>
-
-        @if($record)
-
-            <!-- FORM SUBMITTED -->
-            <div class="activity-item">
-
-                <div class="activity-icon">
-                    <i class="fa-solid fa-file-circle-check"></i>
-                </div>
-
-                <div>
-
-                    <div class="fw-semibold">
-                        Scholar Form Submitted
-                    </div>
-
-                    <small class="text-muted">
-                        {{ $record->created_at->diffForHumans() }}
-                    </small>
-
-                </div>
-
-            </div>
-
-            <!-- PROFILE UPDATED -->
-            <div class="activity-item">
-
-                <div class="activity-icon">
-                    <i class="fa-solid fa-user-pen"></i>
-                </div>
-
-                <div>
-
-                    <div class="fw-semibold">
-                        Profile Completed
-                    </div>
-
-                    <small class="text-muted">
-                        {{ $record->updated_at->diffForHumans() }}
-                    </small>
-
-                </div>
-
-            </div>
-
-        @else
-
-            <!-- NO ACTIVITY -->
-            <div class="activity-item">
-
-                <div class="activity-icon">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                </div>
-
-                <div>
-
-                    <div class="fw-semibold">
-                        No Activity Yet
-                    </div>
-
-                    <small class="text-muted">
-                        Please fill-up your scholar form
-                    </small>
-
-                </div>
-
-            </div>
-
-        @endif
+        </div>
 
     </div>
-
-</div>
-
 
     <!-- MODAL -->
     <div class="modal fade"
@@ -1378,320 +1132,210 @@
             <div class="modal-content">
 
                 <form action="{{ route('student.store') }}"
-      method="POST"
-      enctype="multipart/form-data"
-      id="pdsForm">
-
-    @csrf
-
-    <!-- HEADER -->
-    <div class="modal-header text-white">
-
-        <h4 class="modal-title">
-            LGU Scholar Form
-        </h4>
-
-        <button type="button"
-                class="btn-close btn-close-white"
-                data-bs-dismiss="modal">
-        </button>
-
-    </div>
-
-    <!-- BODY -->
-    <div class="modal-body">
-
-        <!-- PROGRESS -->
-        <div class="progress mb-4">
-
-            <div class="progress-bar"
-                 id="progressBar"
-                 style="width:33%">
-            </div>
-
-        </div>
-
-        <!-- STEP 1 -->
-        <div class="step"
-             id="step1">
-
-            <h3>Student Profile</h3>
-
-            <div class="row g-3">
-
-                <div class="col-md-4">
-                    <label>First Name</label>
-                    <input type="text"
-                           name="first_name"
-                           class="form-control"
-                           placeholder="Enter first name"
-                           required>
-                </div>
-
-                <div class="col-md-4">
-                    <label>Middle Name</label>
-                    <input type="text"
-                           name="middle_name"
-                           class="form-control"
-                           placeholder="Enter middle name"
-                          >
-                </div>
-
-                <div class="col-md-4">
-                    <label>Last Name</label>
-                    <input type="text"
-                           name="last_name"
-                           class="form-control"
-                           placeholder="Enter last name"
-                           required>
-                </div>
-
-                <div class="col-md-4">
-                    <label>Age</label>
-                    <input type="number"
-                           name="age"
-                           class="form-control"
-                           placeholder="Enter your Age"
-                           required>
-                </div>
-
-                <div class="col-md-4">
-                    <label>Birth Date</label>
-                    <input type="date"
-                           name="birth_date"
-                           class="form-control"
-                           required>
-                </div>
-
-                <div class="col-md-4">
-                    <label>Gender</label>
-
-                    <select name="gender"
-                            class="form-select"
-                            required>
-
-                        <option value="">
-                            Select gender
-                        </option>
-
-                        <option>
-                            Male
-                        </option>
-
-                        <option>
-                            Female
-                        </option>
-
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label>Contact Number</label>
-                    <input type="text"
-                           name="contact_number"
-                           class="form-control"
-                           placeholder="Enter contact number"
-                           required>
-                </div>
-
-                <div class="col-md-4">
-                    <label>Email</label>
-                    <input type="email"
-                           name="email"
-                           class="form-control"
-                           placeholder="Enter email"
-                           >
-                </div>
-
-                <div class="col-md-4">
-                    <label>Address</label>
-
-                    <textarea name="address"
-                              class="form-control"
-                              rows="3"
-                              placeholder="Enter address"
-                              required></textarea>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- STEP 2 -->
-        <div class="step d-none"
-             id="step2">
-
-            <h3>Educational Attainment</h3>
-
-            <div class="row g-3">
-
-                <div class="col-md-6">
-                    <label>Elementary School</label>
-                    <input type="text"
-                           name="elementary_school"
-                           class="form-control"
-                           placeholder="Enter elementary school"
-                           required>
-                </div>
-
-                <div class="col-md-6">
-                    <label>Year Graduated</label>
-                    <input type="text"
-                           name="elementary_year"
-                           class="form-control"
-                           placeholder="Enter year graduated"
-                           required>
-                </div>
-
-                <div class="col-md-6">
-                    <label>High School</label>
-                    <input type="text"
-                           name="highschool_school"
-                           class="form-control"
-                           placeholder="Enter high school"
-                           required>
-                </div>
-
-                <div class="col-md-6">
-                    <label>Year Graduated</label>
-                    <input type="text"
-                           name="highschool_year"
-                           class="form-control"
-                           placeholder="Enter year graduated"
-                           required>
-                </div>
-
-                <div class="col-md-6">
-                    <label>College School</label>
-                    <input type="text"
-                           name="college_school"
-                           class="form-control"
-                           placeholder="Enter college school"
-                           required>
-                </div>
-
-                <div class="col-md-6">
-                    <label>Course</label>
-                    <input type="text"
-                           name="college_course"
-                           class="form-control"
-                           placeholder="Enter course"
-                           required>
-                </div>
-
-                
-
-            </div>
-
-        </div>
-
-        <!-- STEP 3 -->
-        <div class="step d-none"
-             id="step3">
-
-            <h3>Family Background</h3>
-
-            <div class="row g-3">
-
-                <div class="col-md-6">
-                    <label>Father Name</label>
-                    <input type="text"
-                           name="father_name"
-                           class="form-control"
-                           placeholder="Enter father name"
-                           required>
-                </div>
-
-                <div class="col-md-6">
-                    <label>Father Occupation</label>
-                    <input type="text"
-                           name="father_occupation"
-                           class="form-control"
-                           placeholder="Enter father occupation"
-                           required>
-                </div>
-
-                <div class="col-md-6">
-                    <label>Mother Name</label>
-                    <input type="text"
-                           name="mother_name"
-                           class="form-control"
-                           placeholder="Enter mother name"
-                           required>
-                </div>
-
-                <div class="col-md-6">
-                    <label>Mother Occupation</label>
-                    <input type="text"
-                           name="mother_occupation"
-                           class="form-control"
-                           placeholder="Enter mother occupation"
-                           required>
-                </div>
-
-                <div class="col-md-6">
-                    <label>Guardian Name</label>
-                    <input type="text"
-                           name="guardian_name"
-                           class="form-control"
-                           placeholder="Enter guardian name"
-                           required>
-                </div>
-
-                <div class="col-md-6">
-                    <label>Guardian Contact</label>
-                    <input type="text"
-                           name="guardian_contact"
-                           class="form-control"
-                           placeholder="Enter guardian contact"
-                           required>
-                </div>
-
-                <div class="col-md-12">
-                    <label>Total Annual Family Income</label>
-                    <input type="text"
-                           name="annual"
-                           class="form-control"
-                           placeholder="Enter annual income"
-                           required>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- FOOTER -->
-    <div class="modal-footer">
-
-        <button type="button"
-                class="btn btn-secondary"
-                id="prevBtn">
-
-            Previous
-
-        </button>
-
-        <button type="button"
-                class="btn btn-primary"
-                id="nextBtn">
-
-            Next
-
-        </button>
-
-        <button type="submit"
-                class="btn btn-success d-none"
-                id="submitBtn">
-
-            Save PDF
-
-        </button>
-
-    </div>
-
-</form>
+                      method="POST"
+                      enctype="multipart/form-data"
+                      id="pdsForm">
+
+                    @csrf
+
+                    <!-- HEADER -->
+                    <div class="modal-header text-white">
+
+                        <h4 class="modal-title">
+                            LGU Scholar Form
+                        </h4>
+
+                        <button type="button"
+                                class="btn-close btn-close-white"
+                                data-bs-dismiss="modal">
+                        </button>
+
+                    </div>
+
+                    <!-- BODY -->
+                    <div class="modal-body">
+
+                        <!-- PROGRESS -->
+                        <div class="progress mb-4">
+                            <div class="progress-bar"
+                                 id="progressBar"
+                                 style="width:33%">
+                            </div>
+                        </div>
+
+                        <!-- STEP 1 -->
+                        <div class="step" id="step1">
+
+                            <h3>Student Profile</h3>
+
+                            <div class="row g-3">
+
+                                <div class="col-md-4">
+                                    <label>First Name</label>
+                                    <input type="text" name="first_name" class="form-control" placeholder="Enter first name" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Middle Name</label>
+                                    <input type="text" name="middle_name" class="form-control" placeholder="Enter middle name">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Last Name</label>
+                                    <input type="text" name="last_name" class="form-control" placeholder="Enter last name" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Age</label>
+                                    <input type="number" name="age" class="form-control" placeholder="Enter your Age" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Birth Date</label>
+                                    <input type="date" name="birth_date" class="form-control" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Gender</label>
+                                    <select name="gender" class="form-select" required>
+                                        <option value="">Select gender</option>
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Contact Number</label>
+                                    <input type="text" name="contact_number" class="form-control" placeholder="Enter contact number" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Email</label>
+                                    <input type="email" name="email" class="form-control" placeholder="Enter email">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Address</label>
+                                    <textarea name="address" class="form-control" rows="3" placeholder="Enter address" required></textarea>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- STEP 2 -->
+                        <div class="step d-none" id="step2">
+
+                            <h3>Educational Attainment</h3>
+
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+                                    <label>Elementary School</label>
+                                    <input type="text" name="elementary_school" class="form-control" placeholder="Enter elementary school" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Year Graduated</label>
+                                    <input type="text" name="elementary_year" class="form-control" placeholder="Enter year graduated" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>High School</label>
+                                    <input type="text" name="highschool_school" class="form-control" placeholder="Enter high school" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Year Graduated</label>
+                                    <input type="text" name="highschool_year" class="form-control" placeholder="Enter year graduated" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>College School</label>
+                                    <input type="text" name="college_school" class="form-control" placeholder="Enter college school" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Course</label>
+                                    <input type="text" name="college_course" class="form-control" placeholder="Enter course" required>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- STEP 3 -->
+                        <div class="step d-none" id="step3">
+
+                            <h3>Family Background</h3>
+
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+                                    <label>Father Name</label>
+                                    <input type="text" name="father_name" class="form-control" placeholder="Enter father name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Father Occupation</label>
+                                    <input type="text" name="father_occupation" class="form-control" placeholder="Enter father occupation" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Mother Name</label>
+                                    <input type="text" name="mother_name" class="form-control" placeholder="Enter mother name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Mother Occupation</label>
+                                    <input type="text" name="mother_occupation" class="form-control" placeholder="Enter mother occupation" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Guardian Name</label>
+                                    <input type="text" name="guardian_name" class="form-control" placeholder="Enter guardian name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Guardian Contact</label>
+                                    <input type="text" name="guardian_contact" class="form-control" placeholder="Enter guardian contact" required>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label>Total Annual Family Income</label>
+                                    <input type="text" name="annual" class="form-control" placeholder="Enter annual income" required>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- FOOTER -->
+                    <div class="modal-footer">
+
+                        <button type="button"
+                                class="btn btn-secondary"
+                                id="prevBtn">
+                            Previous
+                        </button>
+
+                        <button type="button"
+                                class="btn btn-primary"
+                                id="nextBtn">
+                            Next
+                        </button>
+
+                        <button type="submit"
+                                class="btn btn-success d-none"
+                                id="submitBtn">
+                            Save PDF
+                        </button>
+
+                    </div>
+
+                </form>
 
             </div>
 
@@ -1704,162 +1348,144 @@
 
     <script>
 
-    // MOBILE SIDEBAR
+        // MOBILE SIDEBAR
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
 
-    const menuBtn = document.getElementById('menuBtn');
-
-    const sidebar = document.getElementById('sidebar');
-
-    menuBtn.addEventListener('click', () => {
-
-        sidebar.classList.toggle('show');
-
-    });
-
-    // MULTISTEP MODAL
-
-    let currentStep = 1;
-
-    const totalSteps = 3;
-
-    const nextBtn = document.getElementById('nextBtn');
-
-    const prevBtn = document.getElementById('prevBtn');
-
-    const submitBtn = document.getElementById('submitBtn');
-
-    const progressBar = document.getElementById('progressBar');
-
-    function validateStep(step){
-
-        let valid = true;
-
-        const currentInputs = document.querySelectorAll(
-            '#step' + step + ' input, #step' + step + ' select, #step' + step + ' textarea'
-        );
-
-        currentInputs.forEach(input => {
-
-            if(!input.checkValidity()){
-
-                input.reportValidity();
-
-                valid = false;
-
-            }
-
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
         });
 
-        return valid;
-    }
+        // MULTISTEP MODAL
+        let currentStep = 1;
+        const totalSteps = 3;
+        const nextBtn    = document.getElementById('nextBtn');
+        const prevBtn    = document.getElementById('prevBtn');
+        const submitBtn  = document.getElementById('submitBtn');
+        const progressBar = document.getElementById('progressBar');
 
-    function updateSteps(){
-
-        document.querySelectorAll('.step')
-            .forEach(step => step.classList.add('d-none'));
-
-        document.getElementById('step' + currentStep)
-            .classList.remove('d-none');
-
-        progressBar.style.width =
-            ((currentStep / totalSteps) * 100) + '%';
-
-        prevBtn.style.display =
-            currentStep === 1 ? 'none' : 'inline-block';
-
-        nextBtn.classList.toggle(
-            'd-none',
-            currentStep === totalSteps
-        );
-
-        submitBtn.classList.toggle(
-            'd-none',
-            currentStep !== totalSteps
-        );
-    }
-
-    nextBtn.addEventListener('click', () => {
-
-        if(!validateStep(currentStep)){
-            return;
+        function validateStep(step){
+            let valid = true;
+            const currentInputs = document.querySelectorAll(
+                '#step' + step + ' input, #step' + step + ' select, #step' + step + ' textarea'
+            );
+            currentInputs.forEach(input => {
+                if(!input.checkValidity()){
+                    input.reportValidity();
+                    valid = false;
+                }
+            });
+            return valid;
         }
 
-        if(currentStep < totalSteps){
-
-            currentStep++;
-
-            updateSteps();
-
+        function updateSteps(){
+            document.querySelectorAll('.step').forEach(step => step.classList.add('d-none'));
+            document.getElementById('step' + currentStep).classList.remove('d-none');
+            progressBar.style.width = ((currentStep / totalSteps) * 100) + '%';
+            prevBtn.style.display = currentStep === 1 ? 'none' : 'inline-block';
+            nextBtn.classList.toggle('d-none', currentStep === totalSteps);
+            submitBtn.classList.toggle('d-none', currentStep !== totalSteps);
         }
 
-    });
+        nextBtn.addEventListener('click', () => {
+            if(!validateStep(currentStep)) return;
+            if(currentStep < totalSteps){
+                currentStep++;
+                updateSteps();
+            }
+        });
 
-    prevBtn.addEventListener('click', () => {
+        prevBtn.addEventListener('click', () => {
+            if(currentStep > 1){
+                currentStep--;
+                updateSteps();
+            }
+        });
 
-        if(currentStep > 1){
-
-            currentStep--;
-
-            updateSteps();
-
-        }
-
-    });
-
-    document.getElementById('pdsForm')
-        .addEventListener('submit', function(e){
-
+        document.getElementById('pdsForm').addEventListener('submit', function(e){
             if(!validateStep(currentStep)){
-
                 e.preventDefault();
+            }
+        });
 
+        updateSteps();
+
+        // PDF ALERT
+        function showPdfAlert(){
+            const alertBox = document.getElementById('pdfAlert');
+            alertBox.classList.add('show');
+            setTimeout(() => { alertBox.classList.remove('show'); }, 4000);
+        }
+
+        function closePdfAlert(){
+            document.getElementById('pdfAlert').classList.remove('show');
+        }
+
+        // AUTO-DISMISS FLOATING ALERTS
+        setTimeout(() => {
+            document.querySelectorAll('.floating-alert').forEach(alert => {
+                alert.style.opacity = '0';
+                setTimeout(() => { alert.remove(); }, 500);
+            });
+        }, 4000);
+
+        // ===================================================
+        // DEADLINE CHECK — due date: May 28, 2026
+        // ===================================================
+        const DUE_DATE = new Date('2026-05-28T23:59:59');
+        const TODAY    = new Date();
+        const OVERDUE  = TODAY > DUE_DATE;
+
+        if(OVERDUE){
+
+            // 1. Show the top deadline banner
+            document.getElementById('deadlineBanner').classList.remove('d-none');
+
+            // 2. Disable the glowing welcome card button
+            const welcomeBtn = document.getElementById('welcomeFillupBtn');
+            if(welcomeBtn){
+                welcomeBtn.disabled = true;
+                welcomeBtn.classList.add('btn-deadline-disabled');
+                welcomeBtn.removeAttribute('data-bs-toggle');
+                welcomeBtn.removeAttribute('data-bs-target');
             }
 
-        });
+            // 3. Show deadline badge under welcome button
+            document.getElementById('welcomeDeadlineBadge').classList.remove('d-none');
 
-    updateSteps();
+            // 4. Disable the Quick Actions Fill-up button
+            const quickBtn = document.getElementById('quickFillupBtn');
+            if(quickBtn){
+                quickBtn.disabled = true;
+                quickBtn.classList.add('btn-deadline-disabled');
+                quickBtn.removeAttribute('data-bs-toggle');
+                quickBtn.removeAttribute('data-bs-target');
+            }
 
+            // 5. Show deadline badge under quick action button
+            document.getElementById('quickDeadlineBadge').classList.remove('d-none');
 
+            // 6. Disable the sidebar Fill-up Form link
+            const sidebarLink = document.getElementById('sidebarFillupLink');
+            if(sidebarLink){
+                sidebarLink.removeAttribute('data-bs-toggle');
+                sidebarLink.removeAttribute('data-bs-target');
+                sidebarLink.setAttribute('href', 'javascript:void(0)');
+                sidebarLink.classList.add('btn-deadline-disabled');
+                sidebarLink.style.pointerEvents = 'none';
+                sidebarLink.style.opacity       = '0.4';
+            }
 
-function showPdfAlert(){
+            // 7. Block modal from opening even if triggered another way
+            const pdsModal = document.getElementById('pdsModal');
+            if(pdsModal){
+                pdsModal.addEventListener('show.bs.modal', e => e.preventDefault());
+            }
 
-    const alertBox = document.getElementById('pdfAlert');
+        }
+        // ===================================================
 
-    alertBox.classList.add('show');
-
-    setTimeout(() => {
-
-        alertBox.classList.remove('show');
-
-    }, 4000);
-
-}
-
-function closePdfAlert(){
-
-    const alertBox = document.getElementById('pdfAlert');
-
-    alertBox.classList.remove('show');
-
-}
-
-setTimeout(() => {
-
-    document.querySelectorAll('.floating-alert')
-        .forEach(alert => {
-
-            alert.style.opacity = '0';
-
-            setTimeout(() => {
-
-                alert.remove();
-
-            }, 500);
-
-        });
-
-}, 4000);
-</script>
+    </script>
 
 </body>
 
