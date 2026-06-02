@@ -18,51 +18,50 @@ class ApprovedApplicantsExport implements
 
     public function collection()
 {
-    return ApprovedApplicant::get()->values()->map(function ($student, $index) {
+   return ApprovedApplicant::get()->values()->map(function ($student, $index) {
 
-        return [
+    return [
 
-            'scholar_id' =>
-                '2026-' . str_pad($index + 1, 5, '0', STR_PAD_LEFT),
+        
+        'first_name' => strtoupper($student->first_name),
+        'middle_name' => strtoupper($student->middle_name),
+        'last_name' => strtoupper($student->last_name),
 
-            'first_name' => $student->first_name,
-            'middle_name' => $student->middle_name,
-            'last_name' => $student->last_name,
+        'age' => $student->age,
 
-            'age' => $student->age,
-            'birth_date' => $student->birth_date,
-            'gender' => $student->gender,
+        'birth_date' => $student->birth_date,
 
-            'contact_number' => $student->contact_number,
-            'email' => $student->email,
-            'address' => $student->address,
+        'gender' => strtoupper($student->gender),
 
-            'elementary_school' => $student->elementary_school,
-            'elementary_year' => $student->elementary_year,
+        'contact_number' => $student->contact_number,
 
-            'highschool_school' => $student->highschool_school,
-            'highschool_year' => $student->highschool_year,
+        'email' => strtoupper($student->email),
 
-            'college_school' => $student->college_school,
-            'college_course' => $student->college_course,
-           
+        'address' => strtoupper($student->address),
 
-            'father_name' => $student->father_name,
-            'father_occupation' => $student->father_occupation,
+        'elementary_school' => strtoupper($student->elementary_school),
+        'elementary_year' => $student->elementary_year,
 
-            'mother_name' => $student->mother_name,
-            'mother_occupation' => $student->mother_occupation,
+        'highschool_school' => strtoupper($student->highschool_school),
+        'highschool_year' => $student->highschool_year,
 
-            'guardian_name' => $student->guardian_name,
-            'guardian_contact' => $student->guardian_contact,
+        'college_school' => strtoupper($student->college_school),
+        'college_course' => strtoupper($student->college_course),
 
-            'annual' => $student->annual,
+        'father_name' => strtoupper($student->father_name),
+        'father_occupation' => strtoupper($student->father_occupation),
 
-            
+        'mother_name' => strtoupper($student->mother_name),
+        'mother_occupation' => strtoupper($student->mother_occupation),
 
-        ];
+        'guardian_name' => strtoupper($student->guardian_name),
+        'guardian_contact' => strtoupper($student->guardian_contact),
 
-    });
+        'annual' => $student->annual,
+
+    ];
+
+});
 }
     /*
     |--------------------------------------------------------------------------
@@ -75,7 +74,7 @@ class ApprovedApplicantsExport implements
         return [
 
              
-            'CTRL NO.',
+           
             'FIRST NAME',
             'MIDDLE NAME',
             'LAST NAME',
