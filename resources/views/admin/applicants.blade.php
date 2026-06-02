@@ -248,7 +248,6 @@
                             <th>COURSE</th>
                             <th>SCHOOL</th>
                             <th>CONTACT</th>
-                            <th>EMAIL</th>
                             <th>STATUS</th>
                             <th width="250">ACTION</th>
 
@@ -286,9 +285,7 @@
                                 {{ $student->contact_number }}
                             </td>
 
-                            <td>
-                                {{ $student->email }}
-                            </td>
+                           
 
                             <td>
 

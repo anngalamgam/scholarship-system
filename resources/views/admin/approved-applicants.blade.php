@@ -92,7 +92,7 @@
 
                         <tr>
 
-                            <th>ID</th>
+                           
                             <th>FULL NAME</th>
                             <th>COURSE</th>
                             <th>SCHOOL</th>
@@ -110,11 +110,7 @@
 
                         <tr>
 
-                            <td>
-
-                                {{ '2026-' . str_pad($loop->iteration, 5, '0', STR_PAD_LEFT) }}
-
-                            </td>
+                           
 
                             <td class="fw-bold text-uppercase">
 
